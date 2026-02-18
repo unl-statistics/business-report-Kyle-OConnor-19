@@ -1,3 +1,64 @@
 ---
 title: "Draft: Data Documentation"
+author: Kyle O'Connor
+format: 
+  html:
+    link-citations: true
+  pdf:
+    link-citations: true
+bibliography: references.bib
 ---
+
+Source #1: [@noauthor_storm_nodate]
+
+-   **Who:** The National Oceanic and Atmospheric Administration (NOAA)
+
+-   **Why:** To make predictive models about the financial and public health implications of future storms
+
+-   **What the data is about:** Information about different types of storms and weather warning events (such as tornados, high speed wins, hail, flash floods, etc.) including their location, human lives lost, damage costs, when it occurred, and how long it lasted
+
+-   **When the data was collected:** Throughout the 2025 Calendar Year
+
+-   **Where the data was collected:** Across the entire U.S.
+
+-   **How the data was generated/collected:** Compiled by the National Weather Service using local and national public service workers
+
+-   **Structure of the data:** .csv file with 4 main types of data: Location-Based, Time-Based, Damage-Based, and Descriptive (General Description of the Event)
+
+-   **Formatting decisions in the data:** Days are split off from the month they occurred as separate variables. The data uses military time when describing the start and end times for each event. All variable names are defined here: [NOAA Storm Data Formatting Name Guide](https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/Storm-Data-Bulk-csv-Format.pdf).
+
+-   **Data validation/quality control:** Based on [NOAA Quality Guidelines](https://www.noaa.gov/organization/information-technology/policy-oversight/information-quality/information-quality-guidelines), it is bounded by federal law to ensure accuracy and high-quality reporting of information using several rounds of peer review with all Influential Scientific Information (ISI). Additionally, for any research that changes after an initial peer review, the new research is subject to a second peer review.
+
+-   **How the data can be reused/license:** It is free and public government data, so it doesn't need a license.
+
+-   **Suggested data analysis methods:** Multinomial Regression Analysis, Cluster Analysis
+
+-   **Measurement instruments used:** According to [NOAA Observation Systems Page](https://www.weather.gov/about/observation-equipment), they use a variety of measurement instruments including satellite, radar, buoy, weather balloons, and their own Automated Surface Observing System (ASOS) to collect information. They work in conjunction with local and national weather data collection groups to make sure their data is accurate.
+
+--------------------------------------------------------------------------------
+
+Source #2: [@tinari_data_2021]
+
+-   **Who:** Researchers Abigail Marie Tinari and Neil Hammerschlag from the University of Miami's Shark Research & Conservation Program
+
+-   **Why:** To collect data about coastal shark populations around Florida
+
+-   **What the data is about:** Spatial, seasonal, and environmental patterns in shark occurrence, catch per unit effort, composition, and demographics
+
+-   **When the data was collected:** 2009-2021 (Updates from 2021-2024)
+
+-   **Where the data was collected:** Florida Coast from Miami to the Florida Keys
+
+-   **How the data was generated/collected:** Standardized drumline (shark trap) surveys
+
+-   **Structure of the data:** .csv file with 3 main types of data: Geographic Location, Water Conditions, and Species
+
+-   **Formatting decisions in the data:** From their original article [Miami Shark Study](https://www.sciencedirect.com/science/article/pii/S0964569121002556?via%3Dihub), temperatures are given in Celsius, depth is given in meters, and there is a variable for wet seasons (November-April) and dry seasons (May-October) in addition to standard calendar time.
+
+-   **Data validation/quality control:** The entire article was peer reviewed before publishing. Additionally, there was a review and editing process for the article's manuscript.
+
+-   **How the data can be reused/license:** The data is open access, and it is archived in the University of Miami Scholarly Repository. It doesn't require a license.
+
+-   **Suggested data analysis methods:** Spatial Analysis (Mapping), Cluster Analysis
+
+-   **Measurement instruments used:** Drumlines (Shark Traps), GPS Trackers, Digital Water Quality Meters
