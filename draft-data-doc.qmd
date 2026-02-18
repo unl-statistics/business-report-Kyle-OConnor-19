@@ -49,7 +49,7 @@ Source #2: [@tinari_data_2021]
 
 -   **Where the data was collected:** Florida Coast from Miami to the Florida Keys
 
--   **How the data was generated/collected:** Standardized drumline (shark trap) surveys
+-   **How the data was generated/collected:** Standardized Drumline (shark trap) surveys
 
 -   **Structure of the data:** .csv file with 3 main types of data: Geographic Location, Water Conditions, and Species
 
