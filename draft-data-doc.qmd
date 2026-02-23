@@ -53,11 +53,11 @@ Source #2: [@tinari_data_2021]
 
 -   **Structure of the data:** .csv file with 3 main types of data: Geographic Location, Water Conditions, and Species
 
--   **Formatting decisions in the data:** From their original article [Miami Shark Study](https://www.sciencedirect.com/science/article/pii/S0964569121002556?via%3Dihub), temperatures are given in Celsius, depth is given in meters, and there is a variable for wet seasons (November-April) and dry seasons (May-October) in addition to standard calendar time.
+-   **Formatting decisions in the data:** From their original article [Miami Shark Study](https://www.sciencedirect.com/science/article/pii/S0964569121002556), temperatures are given in Celsius, depth is given in meters, and there is a variable for wet seasons (November-April) and dry seasons (May-October) in addition to standard calendar time.
 
 -   **Data validation/quality control:** The entire article was peer reviewed before publishing. Additionally, there was a review and editing process for the article's manuscript.
 
--   **How the data can be reused/license:** The data is open access, and it is archived in the University of Miami Scholarly Repository. It doesn't require a license.
+-   **How the data can be reused/license:** The data is listed as open access, and it is archived in the University of Miami Scholarly Repository. This data is protected by Open Data Commons Attribution (ODC-By) V1.0, which allows for the free use of the data as long as proper credit is given.
 
 -   **Suggested data analysis methods:** Spatial Analysis (Mapping), Cluster Analysis
 
