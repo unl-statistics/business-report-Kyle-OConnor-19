@@ -1,0 +1,375 @@
+---
+title: "AI-usage-disclosure"
+editor: visual
+---
+
+[**AI Tool Used:**]{.underline} Google Gemini (No Version is Specified by Google)
+
+
+[**Prompt:**]{.underline} I want to add a 20m boundary extending from the coast inland and out into the water for my plot. Along the way, show me where the new code is used in relation to my original code.
+
+--------------------------------------------------------------------------------
+
+[**Gemini Response**]{.underline}
+
+To create a "zoomed-in" plot highlighting the 20-mile coastal zone, you can continue using the base R maps package while adjusting your xlim and ylim to focus on the Gulf and Atlantic coasts.
+
+To visualize the 20-mile offshore zone, we can draw a "buffer" by slightly expanding the state lines using the st_buffer function from the sf package (which is the modern standard for spatial data in R).
+Updated Base R Code
+
+```{r}
+#| warning: false
+library(maps)
+library(sf)
+
+# 1. Turn off the strict spherical engine to allow "imperfect" map data
+sf_use_s2(FALSE) 
+
+# 2. Re-create the states object and make it valid
+states_sf <- st_as_sf(map("state", plot = FALSE, fill = TRUE))
+states_sf <- st_make_valid(states_sf)
+
+# 3. Now the union and buffer will work without the error
+land_mass <- st_union(states_sf)
+total_buffer <- st_buffer(land_mass, dist = 0.3)
+
+# 4. Run your original commands
+coastal_zone <- st_buffer(st_union(states_sf), dist = 0.3) 
+
+# 5. (Optional) Turn s2 back on for other work
+sf_use_s2(TRUE)
+
+```
+
+This code zooms in on the Southeast U.S. and adds a light-blue "shark zone" extending into the ocean.
+
+```{r}
+#| warning: false
+library(sf)
+library(maps)
+
+# IMPORTANT: Fix for the "Edge crosses edge" error
+sf_use_s2(FALSE) 
+
+# 1. Setup the Map Data
+states_sf <- st_as_sf(map("state", plot = FALSE, fill = TRUE))
+states_sf <- st_make_valid(states_sf) # Repairs the 'broken' edges in the map
+
+# 2. Create the 20-mile coastal "Shark Zone"
+land_mass <- st_union(states_sf)
+coastal_zone <- st_buffer(land_mass, dist = 0.3) 
+
+# 3. Define the Zoom Area
+zoom_lon <- c(-98, -75)
+zoom_lat <- c(24, 38)
+
+# 4. Generate the Plot
+plot(NA, 
+     xlim = zoom_lon, ylim = zoom_lat,
+     xlab = "Longitude", ylab = "Latitude",
+     asp = 1,
+     main = "Coastal Shark-Lifting Hazard Zone (2021-2025)")
+
+# Draw the 20-mile offshore buffer in light blue
+plot(coastal_zone, col = adjustcolor("lightblue", alpha.f = 0.3), border = NA, add = TRUE)
+
+# Re-add state lines for context
+map("state", col = "grey60", add = TRUE)
+
+# Add Shark Capture Locations
+
+#Added this in during editing to make sure compiling worked well. This was not in the original AI response.
+shark_survey <- read.csv("sharks.csv")
+names(shark_survey)[names(shark_survey) == "Longitude.of.capture"] <- "cap.long"
+names(shark_survey)[names(shark_survey) == "Latitude.of.Capture"] <- "cap.lat"
+
+sharks <- shark_survey[shark_survey$TAXON %in% c("RHIZOPRIONODON TERRAENOVAE", "CARCHARHINUS PLUMBEUS", "CARCHARHINUS LIMBATUS", "CARCHARHINUS ACRONOTUS", "GALEOCERDO CUVIER", "MUSTELUS SINUSMEXICANUS", "CARCHARHINUS BREVIPINNA", "SPHYRNA LEWINI", "GINGLYMOSTOMA CIRRATUM"),]
+sharks20 <- sharks[sharks$YEAR>=2021,] 
+#End of Additions
+
+points(sharks20$cap.long, sharks20$cap.lat,
+       col = "darkblue", pch = 16, cex = 0.4)
+
+# Add Tornado End Positions
+
+#Added this in during editing to make sure compiling worked well. This was not in the original AI response.
+storm2021 <- read.csv("storm2021.csv")
+storm2022 <- read.csv("storm2022.csv")
+storm2023 <- read.csv("storm2023.csv")
+storm2024 <- read.csv("storm2024.csv")
+storm2025 <- read.csv("storm2025.csv")
+library(maps)
+library(stringr)
+tor21 <- storm2021[,c("STATE", "BEGIN_LON", "END_LON", "BEGIN_LAT", "END_LAT", "TOR_F_SCALE", "EVENT_TYPE", "EVENT_NARRATIVE")]
+tor22 <- storm2022[,c("STATE", "BEGIN_LON", "END_LON", "BEGIN_LAT", "END_LAT", "TOR_F_SCALE", "EVENT_TYPE", "EVENT_NARRATIVE")]
+tor23 <- storm2023[,c("STATE", "BEGIN_LON", "END_LON", "BEGIN_LAT", "END_LAT", "TOR_F_SCALE", "EVENT_TYPE", "EVENT_NARRATIVE")]
+tor24 <- storm2024[,c("STATE", "BEGIN_LON", "END_LON", "BEGIN_LAT", "END_LAT", "TOR_F_SCALE", "EVENT_TYPE", "EVENT_NARRATIVE")]
+tor25 <- storm2025[,c("STATE", "BEGIN_LON", "END_LON", "BEGIN_LAT", "END_LAT", "TOR_F_SCALE", "EVENT_TYPE", "EVENT_NARRATIVE")]
+storm <- rbind(tor21, tor22, tor23, tor24, tor25)
+tornado <- storm[storm$EVENT_TYPE == "Tornado",]
+ec <- c("TEXAS", "LOUISIANA", "MISSISSIPPI", "ALABAMA", "FLORIDA", "GEORGIA", "SOUTH CAROLINA", "NORTH CAROLINA", "VIRGINIA", "DELAWARE", "PENNSYLVANIA", "NEW JERSEY", "NEW YORK")
+ec.tornado <- tornado[tornado$STATE %in% ec,]
+clean.tor <- ec.tornado[!is.na(ec.tornado$BEGIN_LON) & !is.na(ec.tornado$BEGIN_LAT) & !is.na(ec.tornado$TOR_F_SCALE), ]
+ef.scale <- c("darkgreen", "yellow", "orange", "red", "maroon", "black")
+strong.tor <- clean.tor[clean.tor$EF_SCALE>=3,]
+#End of Additions
+
+points(strong.tor$END_LON, strong.tor$END_LAT, 
+       col = ef.scale[strong.tor$EF_SCALE + 1],
+       pch = 17, cex = 1.2) 
+
+# Add Legend
+legend("bottomright", 
+       legend = c("Shark Capture", "Tornado End (EF3-5)", "20mi Coastal Zone"), 
+       col = c("darkblue", "red", "lightblue"),
+       pch = c(16, 17, 15), 
+       pt.cex = c(0.6, 1, 2),
+       bg = "white", cex = 0.8)
+```
+
+To add a 20-mile border that extends inland as well, you just need to change how you subtract the shapes. Instead of cutting the land out of the buffer, you keep the full buffer as a "ribbon" that straddles the coastline.
+Here is the updated code to create a 40-mile total "Hazard Ribbon" (20 miles out + 20 miles in) and the zoomed-in plots:
+
+```{r}
+#| warning: false
+# 1. Create the "Ribbon" (20 miles out AND 20 miles in)
+# We take the boundary (lines) of the states and buffer THAT
+sf_use_s2(FALSE)
+state_lines <- st_cast(st_union(states_sf), "MULTILINESTRING")
+hazard_ribbon <- st_buffer(state_lines, dist = 0.3) # 0.3 degrees (~20mi) each side
+
+# 2. Zoom coordinates (Gulf & Atlantic focus)
+zoom_x <- c(-98, -75) 
+zoom_y <- c(24, 38)
+
+# --- PLOT 1: STARTING POSITIONS ---
+plot(NA, xlim = zoom_x, ylim = zoom_y, asp = 1,
+     xlab = "Longitude", ylab = "Latitude",
+     main = "Starting Position: 20mi Coastal Hazard Ribbon")
+
+# Add the ribbon (20mi in/out)
+plot(hazard_ribbon, col = adjustcolor("lightblue", alpha.f = 0.4), border = NA, add = TRUE)
+map("state", col = "grey40", add = TRUE)
+
+# Points
+points(sharks20$cap.long, sharks20$cap.lat, col = "darkblue", pch = 16, cex = 0.4)
+points(strong.tor$BEGIN_LON, strong.tor$BEGIN_LAT, col = ef.scale[strong.tor$EF_SCALE+1], pch = 16)
+
+# --- PLOT 2: ENDING POSITIONS ---
+plot(NA, xlim = zoom_x, ylim = zoom_y, asp = 1,
+     xlab = "Longitude", ylab = "Latitude",
+     main = "Ending Position: 20mi Coastal Hazard Ribbon")
+
+# Add the ribbon
+plot(hazard_ribbon, col = adjustcolor("lightblue", alpha.f = 0.4), border = NA, add = TRUE)
+map("state", col = "grey40", add = TRUE)
+
+# Shark & Tornado Data
+points(sharks20$cap.long, sharks20$cap.lat, col = "darkblue", pch = 16, cex = 0.4)
+segments(x0=strong.tor$BEGIN_LON, y0=strong.tor$BEGIN_LAT, 
+         x1=strong.tor$END_LON, y1=strong.tor$END_LAT, col="black", lwd=1)
+points(strong.tor$END_LON, strong.tor$END_LAT, col = ef.scale[strong.tor$EF_SCALE+1], pch = 16)
+
+legend("bottomright", legend = c("Shark Capture", "EF3", "EF4", "EF5", "20mi Ribbon"), 
+       col = c("darkblue", ef.scale[4:6], "lightblue"), pch = c(16, 16, 16, 16, 15), 
+       bg = "white", cex = 0.7)
+
+```
+
+Differences and Adjustments Made:
+
+```{r}
+#| echo: false
+#| warning: false
+#| layout-ncol: 2
+#| column: page
+#| fig-width: 8
+#| fig-height: 6
+#| fig-subcap: 
+#|   - "Starting Tornado Positions from 2021-2025"
+#|   - "Ending Tornado Positions from 2021-2025 (Line-Segments show Tornado Path)"
+
+#I reorganized these first lines a bit to group the sf portion together.
+strong.tor <- clean.tor[clean.tor$EF_SCALE>=3,]
+
+#I changed some of the names that I will be using multiple times to better fit with my naming convention.
+library(sf)
+sf_use_s2(FALSE)
+states_sf <- st_as_sf(map("state", plot=FALSE, fill=TRUE))
+states_sf <- st_make_valid(states_sf)
+state.lines <- st_cast(st_union(states_sf), "MULTILINESTRING")
+sharknado.zone <- st_buffer(state.lines, dist=0.3)
+
+#My own original code. I didn't change the x and y limits to the ones Gemini said to because I thought the way they were already presenting my plots worked fine.
+plot(strong.tor$BEGIN_LON, strong.tor$BEGIN_LAT, type="n", 
+     xlab="Longitude",
+     xlim=c(-100, -60),
+     ylab="Latitude",
+     ylim=c(20, 50),
+     asp=1,
+     main="Starting Position of Potnential Shark-Lifting U.S. Tornados from 2021-2025")
+map("state", col="grey", fill=FALSE, add=TRUE)
+points(strong.tor$BEGIN_LON, strong.tor$BEGIN_LAT, 
+       col=ef.scale[strong.tor$EF_SCALE+1], 
+       pch=16)
+points(sharks20$cap.long, sharks20$cap.lat,
+       col="lightblue", 
+       pch=16,
+       cex=0.5)
+legend("bottomright", 
+       legend = c("EF3", "EF4", "EF5"), 
+       col=ef.scale[4:6],
+       pch=16, 
+       cex=0.8, 
+       title="Starting EF Rating")
+#I changed the name to better reflect my own naming conventions, and I changed the color to make the final plot more visually striking.
+plot(sharknado.zone, col=adjustcolor("orange", alpha.f=0.4), border=NA, add=TRUE)
+
+#My own original code. I didn't change the x and y limits because I thought the way they were already presenting my plots worked fine.
+plot(strong.tor$END_LON, strong.tor$END_LAT, type="n", 
+     xlab="Longitude",
+     xlim=c(-100, -60),
+     ylab="Latitude",
+     ylim=c(20, 50),
+     asp=1,
+     main="Ending Position of Potential Shark-Lifting U.S. Tornados from 2021-2025")
+segments(x0=strong.tor$BEGIN_LON,
+         y0=strong.tor$BEGIN_LAT, 
+         x1=strong.tor$END_LON,
+         y1=strong.tor$END_LAT, 
+         col=adjustcolor("black", alpha.f=1.5), lwd=1)
+points(strong.tor$BEGIN_LON, strong.tor$BEGIN_LAT, 
+       col=adjustcolor("darkgrey", alpha.f=1), 
+       pch=16, 
+       cex=0.75)
+points(strong.tor$END_LON, strong.tor$END_LAT, 
+       col=ef.scale[strong.tor$EF_SCALE+1],
+       pch=16)
+points(sharks20$cap.long, sharks20$cap.lat,
+       col="lightblue", 
+       pch=16,
+       cex=0.5)
+#I changed the name to better reflect my own naming conventions, and I changed the color to make the final plot more visually striking.
+plot(sharknado.zone, col=adjustcolor("orange", alpha.f=0.4), border=NA, add=TRUE)
+map("state", col="grey", fill=FALSE, add=TRUE)
+legend("bottomright", 
+       legend=c("EF3", "EF4", "EF5"), 
+       col=ef.scale[4:6],
+       pch=16, 
+       cex=0.8, 
+       title="Ending EF Rating")
+
+```
+
+--------------------------------------------------------------------------------
+
+[**AI Tool Used:**]{.underline} Google Gemini (No Version is Specified by Google)
+
+
+[**Prompt:**]{.underline} I want to count the number of data points within the buffer zone. How can I do that. Please show me the code you use and then show how I can integrate it with the rest of my current code so that it works when I compile it.
+
+--------------------------------------------------------------------------------
+
+[**Gemini Response**]{.underline}
+
+To count the number of dots (tornado or shark points) within your sharknado.zone buffer, you need to convert your coordinate data into sf objects and then use st_intersects().
+Here is how you can do it for both your tornadoes and sharks:
+
+1. Convert points to sf objects
+Since your data currently exists as data frames with longitude and latitude, convert them to spatial objects first:
+
+```{r}
+#| warning: false
+# Convert Tornadoes to sf
+strong_tor_sf <- st_as_sf(strong.tor, 
+                          coords = c("BEGIN_LON", "BEGIN_LAT"), 
+                          crs = st_crs(states_sf))
+
+# Convert Sharks to sf
+sharks_sf <- st_as_sf(sharks20, 
+                      coords = c("cap.long", "cap.lat"), 
+                      crs = st_crs(states_sf))
+```
+
+2. Count the intersections
+Use st_intersects() to find which points fall inside the buffer. This returns a list; checking the length of the unlisted result gives you the total count.
+
+```{r}
+#| warning: false
+# Count Tornadoes in the buffer
+
+#Added this in during editing to make sure compiling worked well. This was not in the original AI response.
+state.lines <- st_cast(st_union(states_sf), "MULTILINESTRING")
+sharknado.zone <- st_buffer(state.lines, dist=0.3)
+#End of Additions
+
+tor_in_buffer <- st_intersects(strong_tor_sf, sharknado.zone, sparse = FALSE)
+num_tor_in_zone <- sum(tor_in_buffer)
+
+
+# Count Sharks in the buffer
+sharks_in_buffer <- st_intersects(sharks_sf, sharknado.zone, sparse = FALSE)
+num_sharks_in_zone <- sum(sharks_in_buffer)
+
+# Print results
+cat("Tornadoes in Sharknado Zone:", num_tor_in_zone, "\n")
+cat("Sharks in Sharknado Zone:", num_sharks_in_zone, "\n")
+```
+
+Why this works:
+st_as_sf: Turns your table into a spatial object the sf package understands.
+crs: It is vital that your points use the same Coordinate Reference System as your states_sf map.
+sparse = FALSE: Returns a simple True/False (logical) vector. Summing a logical vector counts every TRUE as 1.
+
+```{r}
+#| warning: false
+# Filter out rows with NA in BEGIN_LON or BEGIN_LAT
+strong.tor.clean <- strong.tor[!is.na(strong.tor$BEGIN_LON) & !is.na(strong.tor$BEGIN_LAT), ]
+
+# Now try the conversion
+strong_tor_sf <- st_as_sf(strong.tor.clean, 
+                          coords = c("BEGIN_LON", "BEGIN_LAT"), 
+                          crs = st_crs(hazard_ribbon))
+
+# Do the same for sharks just in case
+sharks20.clean <- sharks20[!is.na(sharks20$cap.long) & !is.na(sharks20$cap.lat), ]
+sharks_sf <- st_as_sf(sharks20.clean, 
+                      coords = c("cap.long", "cap.lat"), 
+                      crs = st_crs(states_sf))
+
+sharks_in_buffer <- st_filter(sharks_sf, hazard_ribbon)
+nrow(sharks_in_buffer)
+
+# 2. Filter the tornado points that fall inside the ribbon
+tors_in_buffer <- st_filter(strong_tor_sf, hazard_ribbon)
+nrow(tors_in_buffer)
+
+```
+
+Differences Made:
+
+```{r}
+#| warning: false
+
+#Most of the changes made here were to the names to better fit my own naming conventions so I could understand the inputs and outputs better.
+clean_strong.tor <- strong.tor[!is.na(strong.tor$BEGIN_LON) & !is.na(strong.tor$BEGIN_LAT),]
+sf_strong.tor <- st_as_sf(clean_strong.tor, 
+                          coords=c("BEGIN_LON", "BEGIN_LAT"), 
+                          crs=st_crs(states_sf))
+clean.sharks20 <- sharks20[!is.na(sharks20$cap.long) & !is.na(sharks20$cap.lat),]
+sharks.sf <- st_as_sf(clean.sharks20, 
+                      coords=c("cap.long", "cap.lat"), 
+                      crs=st_crs(states_sf))
+sharks.sf <- st_as_sf(sharks20, 
+                      coords=c("cap.long", "cap.lat"), 
+                      crs=st_crs(states_sf))
+
+#Note: The tornado buffer zone shows an incorrect value of 0 because it is dependent on separate code present in my actual results. Unlike earlier examples, I did not want to include a large portion of the original code here in case there was potential confusion about which portions were AI versus done by me, as the AI portion contains my original code mixed in for this case, I will leave it be for now.  
+
+tornado.buffer_zone <- st_intersects(sf_strong.tor, sharknado.zone, sparse=FALSE)
+paste("Number of Tornados in Buffer:", sum(tornado.buffer_zone))
+sharks.buffer_zone <- st_intersects(sharks.sf, sharknado.zone, sparse=FALSE)
+paste("Number of Sharks in Buffer:", sum(sharks.buffer_zone))
+
+```
+--------------------------------------------------------------------------------

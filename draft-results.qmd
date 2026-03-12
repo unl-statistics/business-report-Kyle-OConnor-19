@@ -2,3 +2,247 @@
 title: "Draft: Results"
 ---
 
+This research is being conducted based on tornado path and shark location data collected between January 2021 and December 2025. This was done because a shifting climate has pushed tornados southeast [@ColemanSpatial2024], while shark populations are beginning to move into North Atlantic coasts due to rising ocean temperatures in the Gulf of Mexico and the South Atlantic [@OceanSharkStudy]. While it is impossible to assess the full impact of these climate shifts, as they are still currently taking place, data collected in the past 5 years will produce results that best reflect these shifting dynamics. For this analysis, only the following states were used:
+
+-   Texas
+-   Louisiana
+-   Mississippi
+-   Alabama
+-   Florida
+-   South Carolina
+-   North Carolina
+-   Virginia
+-   Delaware
+-   Pennsylvania
+-   New Jersey
+-   New York
+
+```{r}
+#| echo: false
+#| warning: false
+
+storm2021 <- read.csv("storm2021.csv")
+storm2022 <- read.csv("storm2022.csv")
+storm2023 <- read.csv("storm2023.csv")
+storm2024 <- read.csv("storm2024.csv")
+storm2025 <- read.csv("storm2025.csv")
+
+library(maps)
+library(stringr)
+
+tor21 <- storm2021[,c("STATE", "BEGIN_LON", "END_LON", "BEGIN_LAT", "END_LAT", "TOR_F_SCALE", "EVENT_TYPE", "EVENT_NARRATIVE")]
+tor22 <- storm2022[,c("STATE", "BEGIN_LON", "END_LON", "BEGIN_LAT", "END_LAT", "TOR_F_SCALE", "EVENT_TYPE", "EVENT_NARRATIVE")]
+tor23 <- storm2023[,c("STATE", "BEGIN_LON", "END_LON", "BEGIN_LAT", "END_LAT", "TOR_F_SCALE", "EVENT_TYPE", "EVENT_NARRATIVE")]
+tor24 <- storm2024[,c("STATE", "BEGIN_LON", "END_LON", "BEGIN_LAT", "END_LAT", "TOR_F_SCALE", "EVENT_TYPE", "EVENT_NARRATIVE")]
+tor25 <- storm2025[,c("STATE", "BEGIN_LON", "END_LON", "BEGIN_LAT", "END_LAT", "TOR_F_SCALE", "EVENT_TYPE", "EVENT_NARRATIVE")] 
+storm <- rbind(tor21, tor22, tor23, tor24, tor25)
+
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| layout-ncol: 2
+#| column: page
+#| fig-width: 7
+#| fig-height: 5
+#| fig-subcap: 
+#|   - "Starting Tornado Positions from 2021-2025"
+#|   - "Ending Tornado Positions from 2021-2025"
+
+tornado <- storm[storm$EVENT_TYPE == "Tornado",]
+
+ec <- c("TEXAS", "LOUISIANA", "MISSISSIPPI", "ALABAMA", "FLORIDA", "GEORGIA", "SOUTH CAROLINA", "NORTH CAROLINA", "VIRGINIA", "DELAWARE", "PENNSYLVANIA", "NEW JERSEY", "NEW YORK")
+
+ec.tornado <- tornado[tornado$STATE %in% ec,]
+clean.tor <- ec.tornado[!is.na(ec.tornado$BEGIN_LON) & !is.na(ec.tornado$BEGIN_LAT) & !is.na(ec.tornado$TOR_F_SCALE), ]
+clean.tor$EF_SCALE <- as.numeric(str_remove(clean.tor$TOR_F_SCALE, "EF"))
+ef.scale <- c("darkgreen", "yellow", "orange", "red", "maroon", "black")
+
+plot(clean.tor$BEGIN_LON, clean.tor$BEGIN_LAT, type="n", 
+     xlab="Longitude",
+     ylab="Latitude",
+     asp=1,
+     main="Starting Position of U.S. Tornados from 2021-2025")
+map("state", col="grey", fill=FALSE, add=TRUE)
+points(clean.tor$BEGIN_LON, clean.tor$BEGIN_LAT, 
+       col=ef.scale[clean.tor$EF_SCALE+1], 
+       pch=16)
+legend("bottomright", 
+       legend=c("EF0", "EF1", "EF2", "EF3", "EF4", "EF5"), 
+       col=ef.scale[1:6],
+       pch=16, 
+       cex=0.8, 
+       title="Starting EF Rating")
+
+plot(clean.tor$END_LON, clean.tor$END_LAT, type="n", 
+     xlab="Longitude",
+     ylab="Latitude",
+     asp=1,
+     main="Ending Position of U.S. Tornados from 2021-2025")
+map("state", col="grey", fill=FALSE, add=TRUE)
+points(clean.tor$END_LON, clean.tor$END_LAT, 
+       col=ef.scale[clean.tor$EF_SCALE+1], 
+       pch=16)
+legend("bottomright", 
+       legend=c("EF0", "EF1", "EF2", "EF3", "EF4", "EF5"), 
+       col=ef.scale[1:6],
+       pch=16, 
+       cex=0.8, 
+       title="Ending EF Rating")
+
+```
+
+This plot shows all recorded tornados in states that have a coastline in the Gulf of Mexico or the Atlantic Ocean. The color of each dot represents the EF rating of the tornado. Both graphs are nearly identical, due to the fact that tornadoes do not tend to travel far from their original spot in comparison to the size of the U.S. This plot will be transformed later in the analysis, and is included as a reference for future plots.
+
+--------------------------------------------------------------------------------
+
+```{r}
+#| echo: false
+
+shark_survey <- read.csv("sharks.csv")
+names(shark_survey)[names(shark_survey) == "Longitude.of.capture"] <- "cap.long"
+names(shark_survey)[names(shark_survey) == "Latitude.of.Capture"] <- "cap.lat"
+
+sharks <- shark_survey[shark_survey$TAXON %in% c("RHIZOPRIONODON TERRAENOVAE", "CARCHARHINUS PLUMBEUS", "CARCHARHINUS LIMBATUS", "CARCHARHINUS ACRONOTUS", "GALEOCERDO CUVIER", "MUSTELUS SINUSMEXICANUS", "CARCHARHINUS BREVIPINNA", "SPHYRNA LEWINI", "GINGLYMOSTOMA CIRRATUM"),]
+sharks20 <- sharks[sharks$YEAR>=2021,]
+
+shark.species <- data.frame(sort(table(sharks20$TAXON), decreasing=TRUE))
+
+shark.species9 <- shark.species[1:9,]
+names(shark.species9)[names(shark.species9) == "Var1"] <- "scientific_name"
+names(shark.species9)[names(shark.species9) == "Freq"] <- "frequency"
+knitr::kable(head(shark.species9, 9))
+
+barplot(sort(shark.species9$frequency, decreasing=TRUE),
+        names.arg=shark.species9$scientific_name,
+        las=2,
+        cex.names=0.5,
+        col="maroon",
+        main="Caught Shark Species Count (2021-2025)")
+
+```
+
+This plot shows the frequency of sharks species caught off the Gulf and South Atlantic Coasts between 2021-2025. The shark species with the highest observed frequency was the Rhizopriondon Terranovae, whose common name is the Atlantic Sharpnose Shark, with 1,411 total observations. The next highest was the Carcharhinus Plumbeus, whose common name is the Sandbar Shark, with 48 observations.
+
+```{r}
+#| echo: false
+
+plot(sharks20$cap.long, sharks20$cap.lat, 
+     xlab="Capture Longitude",
+     xlim=c(-100, -70),
+     ylab="Capture Latitude",
+     ylim=c(20, 45),
+     asp=1,
+     main="Shark Capture Locations from 2021-2025",
+     col="lightblue",
+     pch=16, 
+     cex=0.5)
+map("state", col="grey", fill=FALSE, add=TRUE)
+
+```
+
+This plot shows the spatial distribution of shark capture locations since 2021. In total, 314 observations were captured between 2021-2025. It is important to note that the range of this data is only from the coast of Texas to North Carolina, and no data was able to be collected for sharks captured in the North Atlantic. Each dot represents one specific capture and a specific date, but it is possible that the same shark was captured at separate dates in separate or similar locations.
+
+--------------------------------------------------------------------------------
+
+```{r}
+#| echo: false
+#| warning: false
+#| layout-ncol: 2
+#| column: page
+#| fig-width: 8
+#| fig-height: 6
+#| fig-subcap: 
+#|   - "Starting Tornado Positions from 2021-2025"
+#|   - "Ending Tornado Positions from 2021-2025 (Line-Segments show Tornado Path)"
+
+library(sf)
+
+strong.tor <- clean.tor[clean.tor$EF_SCALE>=3,]
+
+sf_use_s2(FALSE)
+states_sf <- st_as_sf(map("state", plot=FALSE, fill=TRUE))
+states_sf <- st_make_valid(states_sf)
+state.lines <- st_cast(st_union(states_sf), "MULTILINESTRING")
+sharknado.zone <- st_buffer(state.lines, dist=0.3)
+
+plot(strong.tor$BEGIN_LON, strong.tor$BEGIN_LAT, type="n", 
+     xlab="Longitude",
+     xlim=c(-100, -70),
+     ylab="Latitude",
+     ylim=c(20, 45),
+     asp=1,
+     main="Starting Position of Potnential Shark-Lifting U.S. Tornados from 2021-2025")
+map("state", col="grey", fill=FALSE, add=TRUE)
+points(strong.tor$BEGIN_LON, strong.tor$BEGIN_LAT, 
+       col=ef.scale[strong.tor$EF_SCALE+1], 
+       pch=16)
+points(sharks20$cap.long, sharks20$cap.lat,
+       col="lightblue", 
+       pch=16,
+       cex=0.5)
+legend("bottomright", 
+       legend = c("EF3", "EF4", "EF5"), 
+       col=ef.scale[4:6],
+       pch=16, 
+       cex=0.8, 
+       title="Starting EF Rating")
+plot(sharknado.zone, col=adjustcolor("orange", alpha.f=0.4), border=NA, add=TRUE)
+
+plot(strong.tor$END_LON, strong.tor$END_LAT, type="n", 
+     xlab="Longitude",
+     xlim=c(-100, -70),
+     ylab="Latitude",
+     ylim=c(20, 45),
+     asp=1,
+     main="Ending Position of Potential Shark-Lifting U.S. Tornados from 2021-2025")
+segments(x0=strong.tor$BEGIN_LON,
+         y0=strong.tor$BEGIN_LAT, 
+         x1=strong.tor$END_LON,
+         y1=strong.tor$END_LAT, 
+         col=adjustcolor("black", alpha.f=1.5), lwd=1)
+points(strong.tor$BEGIN_LON, strong.tor$BEGIN_LAT, 
+       col=adjustcolor("darkgrey", alpha.f=1), 
+       pch=16, 
+       cex=0.75)
+points(strong.tor$END_LON, strong.tor$END_LAT, 
+       col=ef.scale[strong.tor$EF_SCALE+1],
+       pch=16)
+points(sharks20$cap.long, sharks20$cap.lat,
+       col="lightblue", 
+       pch=16,
+       cex=0.5)
+plot(sharknado.zone, col=adjustcolor("orange", alpha.f=0.4), border=NA, add=TRUE)
+map("state", col="grey", fill=FALSE, add=TRUE)
+legend("bottomright", 
+       legend=c("EF3", "EF4", "EF5"), 
+       col=ef.scale[4:6],
+       pch=16, 
+       cex=0.8, 
+       title="Ending EF Rating")
+
+```
+```{r}
+#| echo: false
+#| warning: false
+
+clean_strong.tor <- strong.tor[!is.na(strong.tor$BEGIN_LON) & !is.na(strong.tor$BEGIN_LAT),]
+sf_strong.tor <- st_as_sf(clean_strong.tor, 
+                          coords=c("BEGIN_LON", "BEGIN_LAT"), 
+                          crs=st_crs(states_sf))
+clean.sharks20 <- sharks20[!is.na(sharks20$cap.long) & !is.na(sharks20$cap.lat),]
+sharks.sf <- st_as_sf(clean.sharks20, 
+                      coords=c("cap.long", "cap.lat"), 
+                      crs=st_crs(states_sf))
+sharks.sf <- st_as_sf(sharks20, 
+                      coords=c("cap.long", "cap.lat"), 
+                      crs=st_crs(states_sf))
+tornado.buffer_zone <- st_intersects(sf_strong.tor, sharknado.zone, sparse=FALSE)
+paste("Number of Tornados in Buffer:", sum(tornado.buffer_zone))
+sharks.buffer_zone <- st_intersects(sharks.sf, sharknado.zone, sparse=FALSE)
+paste("Number of Sharks in Buffer:", sum(sharks.buffer_zone))
+
+```
+This plot shows the paths of tornados relative to the location of sharks in the Gulf of Mexico and the South Atlantic, conditioned on the tornado strength being EF3 or higher. An EF3 is the minimum required tornado strength needed for even a plausible chance of picking up sharks. In total, 334 tornados in the past 5 years have been observed with an EF rating of at least 3. The dark colored dots represents the ending location of the tornado, while the grey dot connected via a line segment represents the tornado's original position. The blue dots represent shark captures from 2021-2025. Over the past 5 years, only 10 such tornados are even found in the buffer, and 7 of them move away from the coast. The other 3 move parallel to the coast. Additionally, only 734 sharks from the sample were captured within the buffer region where a sharknado could form.
+
