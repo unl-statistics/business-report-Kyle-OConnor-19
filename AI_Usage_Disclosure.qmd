@@ -271,7 +271,7 @@ legend("bottomright",
 
 [**Gemini Response**]{.underline}
 
-To count the number of dots (tornado or shark points) within your sharknado.zone buffer, you need to convert your coordinate data into sf objects and then use st_intersects().
+To count the number of dots (tornado or shark points) within your buffer, you need to convert your coordinate data into sf objects and then use st_intersects().
 Here is how you can do it for both your tornadoes and sharks:
 
 1. Convert points to sf objects
@@ -293,26 +293,57 @@ sharks_sf <- st_as_sf(sharks20,
 2. Count the intersections
 Use st_intersects() to find which points fall inside the buffer. This returns a list; checking the length of the unlisted result gives you the total count.
 
+To get your count to reflect unique locations (or unique sharks, if there is a Tag ID column), you need to filter for distinct rows before running the buffer intersection.
+The Fixed Code for your Count:
+
+Add this block at the very end of your script. It uses unique() on the coordinates to ensure each capture location is only counted once.
+
 ```{r}
 #| warning: false
-# Count Tornadoes in the buffer
+# 1. Convert to SF, but keep only UNIQUE capture locations
+# This collapses your 2,831 rows back down to unique spatial points
+sharks_sf <- st_as_sf(sharks20, 
+                      coords=c("cap.long", "cap.lat"), 
+                      crs=st_crs(states_sf))
 
-#Added this in during editing to make sure compiling worked well. This was not in the original AI response.
-state.lines <- st_cast(st_union(states_sf), "MULTILINESTRING")
-sharknado.zone <- st_buffer(state.lines, dist=0.3)
-#End of Additions
+# Use unique() to remove duplicate coordinate rows
+sharks_unique_sf <- unique(sharks_sf)
 
-tor_in_buffer <- st_intersects(strong_tor_sf, sharknado.zone, sparse = FALSE)
-num_tor_in_zone <- sum(tor_in_buffer)
+# 2. Run the intersection on the UNIQUE hazard ribbon locations
+# This ensures a shark at one spot isn't counted multiple times
+sharks.matrix <- st_intersects(sharks_unique_sf, hazard_ribbon, sparse = FALSE)
 
+# 3. Calculate the count
+# rowSums > 0 checks if that specific location falls in ANY buffer segment
+unique_shark_count <- sum(rowSums(sharks.matrix) > 0)
 
-# Count Sharks in the buffer
-sharks_in_buffer <- st_intersects(sharks_sf, sharknado.zone, sparse = FALSE)
-num_sharks_in_zone <- sum(sharks_in_buffer)
+paste("Number of Unique Shark Locations in Buffer:", unique_shark_count)
+```
 
-# Print results
-cat("Tornadoes in Sharknado Zone:", num_tor_in_zone, "\n")
-cat("Sharks in Sharknado Zone:", num_sharks_in_zone, "\n")
+Here is the updated code for the tornadoes:
+
+```{r}
+#| warning: false
+# 1. Convert to SF and keep only UNIQUE tornado start locations
+# This prevents counting the same tornado record multiple times
+sf_strong.tor <- st_as_sf(strong.tor, 
+                          coords=c("BEGIN_LON", "BEGIN_LAT"), 
+                          crs=st_crs(states_sf))
+
+# Remove any duplicate rows if they exist in your data
+tor_unique.sf <- unique(sf_strong.tor)
+
+# 2. Directly filter the tornados that intersect the zone
+# [ , ] syntax filters rows based on the spatial predicate
+tor_in_buffer <- tor_unique.sf[st_intersects(tor_unique.sf, sharknado.zone, sparse = FALSE), ]
+
+# 3. Count the rows of the resulting object
+unique_tor_count <- nrow(tor_in_buffer)
+
+# Handle the case where no tornados are found (returns 0 instead of NULL)
+if(is.null(unique_tor_count)) unique_tor_count <- 0
+
+paste("Number of Unique Tornados in Buffer:", unique_tor_count)
 ```
 
 Why this works:
@@ -320,55 +351,30 @@ st_as_sf: Turns your table into a spatial object the sf package understands.
 crs: It is vital that your points use the same Coordinate Reference System as your states_sf map.
 sparse = FALSE: Returns a simple True/False (logical) vector. Summing a logical vector counts every TRUE as 1.
 
-```{r}
-#| warning: false
-# Filter out rows with NA in BEGIN_LON or BEGIN_LAT
-strong.tor.clean <- strong.tor[!is.na(strong.tor$BEGIN_LON) & !is.na(strong.tor$BEGIN_LAT), ]
-
-# Now try the conversion
-strong_tor_sf <- st_as_sf(strong.tor.clean, 
-                          coords = c("BEGIN_LON", "BEGIN_LAT"), 
-                          crs = st_crs(hazard_ribbon))
-
-# Do the same for sharks just in case
-sharks20.clean <- sharks20[!is.na(sharks20$cap.long) & !is.na(sharks20$cap.lat), ]
-sharks_sf <- st_as_sf(sharks20.clean, 
-                      coords = c("cap.long", "cap.lat"), 
-                      crs = st_crs(states_sf))
-
-sharks_in_buffer <- st_filter(sharks_sf, hazard_ribbon)
-nrow(sharks_in_buffer)
-
-# 2. Filter the tornado points that fall inside the ribbon
-tors_in_buffer <- st_filter(strong_tor_sf, hazard_ribbon)
-nrow(tors_in_buffer)
-
-```
-
 Differences Made:
 
 ```{r}
 #| warning: false
 
 #Most of the changes made here were to the names to better fit my own naming conventions so I could understand the inputs and outputs better.
-clean_strong.tor <- strong.tor[!is.na(strong.tor$BEGIN_LON) & !is.na(strong.tor$BEGIN_LAT),]
-sf_strong.tor <- st_as_sf(clean_strong.tor, 
-                          coords=c("BEGIN_LON", "BEGIN_LAT"), 
-                          crs=st_crs(states_sf))
-clean.sharks20 <- sharks20[!is.na(sharks20$cap.long) & !is.na(sharks20$cap.lat),]
-sharks.sf <- st_as_sf(clean.sharks20, 
-                      coords=c("cap.long", "cap.lat"), 
-                      crs=st_crs(states_sf))
 sharks.sf <- st_as_sf(sharks20, 
                       coords=c("cap.long", "cap.lat"), 
                       crs=st_crs(states_sf))
+unique.sharks.sf <- unique(sharks.sf)
+sharks_in_zone <- st_filter(unique.sharks.sf, sharknado.zone)
+unique.shark.count <- nrow(sharks_in_zone)
+paste("Number of Sharks in Sharknado Buffer Zone:", unique.shark.count)
 
-#Note: The tornado buffer zone shows an incorrect value of 0 because it is dependent on separate code present in my actual results. Unlike earlier examples, I did not want to include a large portion of the original code here in case there was potential confusion about which portions were AI versus done by me, as the AI portion contains my original code mixed in for this case, I will leave it be for now.  
+#Note: This code will produce the incorrect answer that is not the one seen in the actual results section. Gemini and Quarto were having major issues between each other when compiling, and as a result I just needed to change the code to the minimum level where it would compile, even at the expense of some of the accuracy between the results and this changed code portion. This code is used as a foundation for the actual results, but because the dependencies are not the exact ones used in the results, the code breaks down a bit. The goal of this disclosure is to show you the foundation, even if the code fails here.
 
-tornado.buffer_zone <- st_intersects(sf_strong.tor, sharknado.zone, sparse=FALSE)
-paste("Number of Tornados in Buffer:", sum(tornado.buffer_zone))
-sharks.buffer_zone <- st_intersects(sharks.sf, sharknado.zone, sparse=FALSE)
-paste("Number of Sharks in Buffer:", sum(sharks.buffer_zone))
+strong.tor_clean <- strong.tor[!is.na(strong.tor$BEGIN_LON) & !is.na(strong.tor$BEGIN_LAT),]
+sf_strong.tor <- st_as_sf(strong.tor_clean, 
+                          coords=c("BEGIN_LON", "BEGIN_LAT"), 
+                          crs=st_crs(states_sf))
+unique.tor.sf <- unique(sf_strong.tor)
+tor_in_zone <- st_filter(unique.tor.sf, sharknado.zone)
+unique.tor.count <- nrow(tor_in_zone)
+paste("Number of Tornados in Sharknado Buffer Zone:", unique.tor.count)
 
 ```
 --------------------------------------------------------------------------------

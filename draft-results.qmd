@@ -100,11 +100,11 @@ This plot shows all recorded tornados in states that have a coastline in the Gul
 ```{r}
 #| echo: false
 
-shark_survey <- read.csv("sharks.csv")
-names(shark_survey)[names(shark_survey) == "Longitude.of.capture"] <- "cap.long"
-names(shark_survey)[names(shark_survey) == "Latitude.of.Capture"] <- "cap.lat"
+shark.survey <- read.csv("sharks.csv")
+names(shark.survey)[names(shark.survey) == "Longitude.of.capture"] <- "cap.long"
+names(shark.survey)[names(shark.survey) == "Latitude.of.Capture"] <- "cap.lat"
 
-sharks <- shark_survey[shark_survey$TAXON %in% c("RHIZOPRIONODON TERRAENOVAE", "CARCHARHINUS PLUMBEUS", "CARCHARHINUS LIMBATUS", "CARCHARHINUS ACRONOTUS", "GALEOCERDO CUVIER", "MUSTELUS SINUSMEXICANUS", "CARCHARHINUS BREVIPINNA", "SPHYRNA LEWINI", "GINGLYMOSTOMA CIRRATUM"),]
+sharks <- shark.survey[shark.survey$TAXON %in% c("RHIZOPRIONODON TERRAENOVAE", "CARCHARHINUS PLUMBEUS", "CARCHARHINUS LIMBATUS", "CARCHARHINUS ACRONOTUS", "GALEOCERDO CUVIER", "MUSTELUS SINUSMEXICANUS", "CARCHARHINUS BREVIPINNA", "SPHYRNA LEWINI", "GINGLYMOSTOMA CIRRATUM"),]
 sharks20 <- sharks[sharks$YEAR>=2021,]
 
 shark.species <- data.frame(sort(table(sharks20$TAXON), decreasing=TRUE))
@@ -229,22 +229,22 @@ legend("bottomright",
 #| echo: false
 #| warning: false
 
-clean_strong.tor <- strong.tor[!is.na(strong.tor$BEGIN_LON) & !is.na(strong.tor$BEGIN_LAT),]
-sf_strong.tor <- st_as_sf(clean_strong.tor, 
-                          coords=c("BEGIN_LON", "BEGIN_LAT"), 
-                          crs=st_crs(states_sf))
-clean.sharks20 <- sharks20[!is.na(sharks20$cap.long) & !is.na(sharks20$cap.lat),]
-sharks.sf <- st_as_sf(clean.sharks20, 
-                      coords=c("cap.long", "cap.lat"), 
-                      crs=st_crs(states_sf))
 sharks.sf <- st_as_sf(sharks20, 
                       coords=c("cap.long", "cap.lat"), 
                       crs=st_crs(states_sf))
-tornado.buffer_zone <- st_intersects(sf_strong.tor, sharknado.zone, sparse=FALSE)
-paste("Number of Tornados in Buffer:", sum(tornado.buffer_zone))
-sharks.buffer_zone <- st_intersects(sharks.sf, sharknado.zone, sparse=FALSE)
-paste("Number of Sharks in Buffer:", sum(sharks.buffer_zone))
+unqiue.sharks.sf <- unique(sharks.sf)
+sharks.matrix <- st_intersects(unqiue.sharks.sf, sharknado.zone, sparse=FALSE)
+unique.shark.count <- sum(rowSums(sharks.matrix)>0)
+paste("Number of Sharks in Sharnado Buffer Zone:", unique.shark.count)
 
+strong.tor_clean <- strong.tor[!is.na(strong.tor$BEGIN_LON) & !is.na(strong.tor$BEGIN_LAT), ]
+sf_strong.tor <- st_as_sf(strong.tor_clean, 
+                          coords = c("BEGIN_LON", "BEGIN_LAT"), 
+                          crs = st_crs(states_sf))
+unique.sharks.sf <- unique(sf_strong.tor)
+tor.matrix <- st_intersects(unique.sharks.sf, sharknado.zone, sparse=FALSE)
+unique.tor.count <- sum(rowSums(tor.matrix)>0)
+paste("Number of Tornados in Sharknado Buffer Zone:", unique.tor.count)
 ```
 This plot shows the paths of tornados relative to the location of sharks in the Gulf of Mexico and the South Atlantic, conditioned on the tornado strength being EF3 or higher. An EF3 is the minimum required tornado strength needed for even a plausible chance of picking up sharks. In total, 334 tornados in the past 5 years have been observed with an EF rating of at least 3. The dark colored dots represents the ending location of the tornado, while the grey dot connected via a line segment represents the tornado's original position. The blue dots represent shark captures from 2021-2025. Over the past 5 years, only 10 such tornados are even found in the buffer, and 7 of them move away from the coast. The other 3 move parallel to the coast. Additionally, only 734 sharks from the sample were captured within the buffer region where a sharknado could form.
 
