@@ -179,7 +179,6 @@ legend("bottomright", legend = c("Shark Capture", "EF3", "EF4", "EF5", "20mi Rib
 Differences and Adjustments Made:
 
 ```{r}
-#| echo: false
 #| warning: false
 #| layout-ncol: 2
 #| column: page
