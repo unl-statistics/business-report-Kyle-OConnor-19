@@ -146,6 +146,8 @@ This plot shows the spatial distribution of shark capture locations since 2021. 
 
 --------------------------------------------------------------------------------
 
+According to an analysis done by Kim Martini of Deep Sea News, an oceanographer with a Ph.D. in Physical Oceanography from the University of Washington, the minimum wind speed that could, in theory, lift up medium-to-large sized sharks would be equivalent to an EF4 tornado. [@RecipeSharknadoDeep] To create a conservative estimate for smaller sharks, which based on the previous analysis, is the most prevalent size of sharks in the Gulf of Mexico and the South Atlantic, these analyses are being conditioned on tornados classified at a minimum of an EF3.
+
 ```{r}
 #| echo: false
 #| warning: false
