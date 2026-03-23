@@ -9,6 +9,13 @@ format:
 bibliography: references.bib
 ---
 
+::: callout-note
+How many of these values are missing? Is there any relationship between missingness?
+
+Turn this list -- which is fine for a draft -- into a set of well-structured paragraphs with subsections as necessary for organization. You have all the info but you need to make it into a more report-like structure for the final draft.
+
+:::
+
 Source #1: [@noauthor_storm_nodate]
 
 -   **Who:** The National Oceanic and Atmospheric Administration (NOAA)
