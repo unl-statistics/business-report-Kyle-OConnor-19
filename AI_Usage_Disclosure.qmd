@@ -5,6 +5,11 @@ editor: visual
 
 [**AI Tool Used:**]{.underline} Google Gemini (No Version is Specified by Google)
 
+::: callout-note
+Then you need to list the date, or ask Gemini what version to reference.
+
+:::
+
 
 [**Prompt:**]{.underline} I want to add a 20m boundary extending from the coast inland and out into the water for my plot. Along the way, show me where the new code is used in relation to my original code.
 

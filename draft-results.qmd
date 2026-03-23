@@ -2,7 +2,7 @@
 title: "Draft: Results"
 ---
 
-This research is being conducted based on tornado path and shark location data collected between January 2021 and December 2025. This was done because a shifting climate has pushed tornados southeast [@ColemanSpatial2024], while shark populations are beginning to move into North Atlantic coasts due to rising ocean temperatures in the Gulf of Mexico and the South Atlantic [@OceanSharkStudy]. While it is impossible to assess the full impact of these climate shifts, as they are still currently taking place, data collected in the past 5 years will produce results that best reflect these shifting dynamics. For this analysis, only the following states were used:
+This research is being conducted based on tornado path and shark location data collected between January 2021 and December 2025. This was done because a shifting climate has pushed tornadoes southeast [@ColemanSpatial2024], while shark populations are beginning to move into North Atlantic coasts due to rising ocean temperatures in the Gulf of Mexico and the South Atlantic [@OceanSharkStudy]. While it is impossible to assess the full impact of these climate shifts, as they are still currently taking place, data collected in the past 5 years will produce results that best reflect these shifting dynamics. For this analysis, only the following states were used:
 
 -   Texas
 -   Louisiana
@@ -16,6 +16,12 @@ This research is being conducted based on tornado path and shark location data c
 -   Pennsylvania
 -   New Jersey
 -   New York
+
+::: callout-note
+
+Why these states? What's special about them? Can you make a small map instead of a bulleted list? Why did you leave out Georgia and Maryland?
+
+:::
 
 ```{r}
 #| echo: false
@@ -39,6 +45,12 @@ storm <- rbind(tor21, tor22, tor23, tor24, tor25)
 
 ```
 
+::: callout-warning
+
+Please, for the love of all that is holy, do not use stoplight color scales in my class. I can't see them, they generally suck, and yellow is not high enough contrast with the background. Your maps are nicely constructed in general, but the viridis palette is a good option that isn't stoplight colors, is perceptually uniform, and is way more colorblind friendly.
+
+:::
+
 ```{r}
 #| echo: false
 #| warning: false
@@ -49,6 +61,7 @@ storm <- rbind(tor21, tor22, tor23, tor24, tor25)
 #| fig-subcap: 
 #|   - "Starting Tornado Positions from 2021-2025"
 #|   - "Ending Tornado Positions from 2021-2025"
+#| label: fig-tornado-location
 
 tornado <- storm[storm$EVENT_TYPE == "Tornado",]
 
@@ -93,9 +106,29 @@ legend("bottomright",
 
 ```
 
-This plot shows all recorded tornados in states that have a coastline in the Gulf of Mexico or the Atlantic Ocean. The color of each dot represents the EF rating of the tornado. Both graphs are nearly identical, due to the fact that tornadoes do not tend to travel far from their original spot in comparison to the size of the U.S. This plot will be transformed later in the analysis, and is included as a reference for future plots.
+::: callout-note
 
---------------------------------------------------------------------------------
+Figures and tables should have captions and should have dynamic numbering produced by quarto.
+
+Every figure and table should be referenced appropriately in the text.
+
+I've demonstrated what I want for the first figure -- the rest are your job.
+
+:::
+
+@fig-tornado-location-1 and @fig-tornado-location-2 show all recorded tornados in states that have a coastline in the Gulf of Mexico or the Atlantic Ocean. The color of each dot represents the EF rating of the tornado. Both graphs are nearly identical, due to the fact that tornadoes do not tend to travel far from their original spot in comparison to the size of the U.S. This plot will be transformed later in the analysis, and is included as a reference for future plots.
+
+::: callout-note
+
+Have a coastline along -> border the Gulf of Mexico or the Atlantic Ocean (also, I'm fine with Gulf of Mexico, but I think technically we're supposed to call it the gulf of america now... eyeroll. You might at least explain which convention you're using with a footnote. I'm not going to take off points either way as long as you're consistent.)
+
+It might be more effective to show tornadoes as line segments rather than showing start and end points separately and leaving people to work out which tornadoes correspond. E.g. https://rpubs.com/kquimz/1053387 has a graph of Oklahoma with segments colored by year. I don't think the year coloration is necessary for your purposes but it's still a decent example of what I'm referring to.
+
+Spell check your work! In RStudio, you can use F7 to activate spell check.
+
+You might want to make use of subsections here to talk about separate analyses for tornadoes and sharks, and then bring them together under a third subsection.
+
+:::
 
 ```{r}
 #| echo: false
@@ -125,6 +158,14 @@ barplot(sort(shark.species9$frequency, decreasing=TRUE),
 
 This plot shows the frequency of sharks species caught off the Gulf and South Atlantic Coasts between 2021-2025. The shark species with the highest observed frequency was the Rhizopriondon Terranovae, whose common name is the Atlantic Sharpnose Shark, with 1,411 total observations. The next highest was the Carcharhinus Plumbeus, whose common name is the Sandbar Shark, with 48 observations.
 
+::: callout-note
+
+Feel free to put pics of the sharks in an `::: aside` block (which will add them to the margin) or in the table itself. Wikipedia/Wikimedia is a great source of pictures that are usually free to reuse. Your goal is to maintain reader interest, which can justify including some pictures that aren't specifically data focused.
+
+You probably don't need both the table and the plot. Which gets you closer to what you want to communicate?
+
+:::
+
 ```{r}
 #| echo: false
 
@@ -144,9 +185,15 @@ map("state", col="grey", fill=FALSE, add=TRUE)
 
 This plot shows the spatial distribution of shark capture locations since 2021. In total, 314 observations were captured between 2021-2025. It is important to note that the range of this data is only from the coast of Texas to North Carolina, and no data was able to be collected for sharks captured in the North Atlantic. Each dot represents one specific capture and a specific date, but it is possible that the same shark was captured at separate dates in separate or similar locations.
 
---------------------------------------------------------------------------------
+::: callout-note
 
-According to an analysis done by Kim Martini of Deep Sea News, an oceanographer with a Ph.D. in Physical Oceanography from the University of Washington, the minimum wind speed that could, in theory, lift up medium-to-large sized sharks would be equivalent to an EF4 tornado [@RecipeSharknadoDeep]. To create a conservative estimate for smaller sharks, which based on the previous analysis, is the most prevalent size of sharks in the Gulf of Mexico and the South Atlantic, these analyses are being conditioned on tornados classified at a minimum of an EF3.
+You could annotate your map to show that there weren't any sharks noted above North Carolina -- is that because they didn't venture up north or because of shark ranges? I'm guessing sharks don't adhere to state lines, but stranger things have happened? At any rate, acknowledge the limitation, explain why it exists, and then address how you're planning to work around it.
+
+:::
+
+-------------------------------------------------------------------------------- <!-- You don't need these lines -- use subsections. -->
+
+According to an analysis done by Kim Martini of Deep Sea News, the minimum wind speed that could, in theory, lift up medium-to-large sized sharks would be equivalent to an EF4 tornado [@RecipeSharknadoDeep]. To create a conservative estimate for smaller sharks, which based on the previous analysis, is the most prevalent size of sharks in the Gulf of Mexico and the South Atlantic, these analyses are being conditioned on tornados classified at a minimum of an EF3.
 
 ```{r}
 #| echo: false
@@ -246,5 +293,11 @@ tor.matrix <- st_intersects(unique.sharks.sf, sharknado.zone, sparse=FALSE)
 unique.tor.count <- sum(rowSums(tor.matrix)>0)
 paste("Number of Tornados in Sharknado Buffer Zone:", unique.tor.count)
 ```
+
 This plot shows the paths of tornados relative to the location of sharks in the Gulf of Mexico and the South Atlantic, conditioned on the tornado strength being EF3 or higher. An EF3 is the minimum required tornado strength needed for even a plausible chance of picking up sharks. In total, 334 tornados in the past 5 years have been observed with an EF rating of at least 3. The dark colored dots represents the ending location of the tornado, while the grey dot connected via a line segment represents the tornado's original position. The blue dots represent shark captures from 2021-2025. Over the past 5 years, only 10 such tornados are even found in the buffer, and 7 of them move away from the coast. The other 3 move parallel to the coast. Additionally, only 734 sharks from the sample were captured within the buffer region where a sharknado could form.
 
+::: callout-note
+
+So, what can you conclude? How can you take this data and appropriately evaluate the feasibility of a sharknado event? You need to wrap around to the actual question of interest.
+
+:::
