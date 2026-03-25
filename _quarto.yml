@@ -3,7 +3,7 @@ project:
   output-dir: docs
 
 book:
-  title: "Business Report: Analysis of Climate Changed Induced Shark-Lifting Tornados"
+  title: "Analysis of the Conditions Required for Climate Changed Induced Shark-Lifting Tornados"
   author: "Kyle O'Connor"
   page-footer:
     left: "Copyright 2025, Kyle O'Connor"
@@ -25,8 +25,10 @@ format:
   html:
     highlight-style: a11y
     theme: cosmo
+    toc-title: "Table of Contents"
   pdf:
     documentclass: scrreprt
+    toc-title: "Table of Contents"
 
 
 
