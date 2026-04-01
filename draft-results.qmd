@@ -2,7 +2,9 @@
 title: "Draft: Results"
 ---
 
-# Methodology
+# Results {#sec-draft-results}
+
+## Methodology
 
 This research is being conducted based on tornado path and shark location data collected between January 2021 and December 2025. This was done because a shifting climate has pushed tornadoes southeast [@ColemanSpatial2024], while shark populations are beginning to move into North Atlantic coasts due to rising ocean temperatures in the Gulf of Mexico and the South Atlantic [@OceanSharkStudy]. While it is impossible to assess the full impact of these climate shifts, as they are still currently taking place, data collected in the past 5 years will produce results that best reflect these shifting dynamics. Because the data used in this analysis for monitoring shark location only spans from Texas to North Carolina, only the following states used in that analysis were used:
 
@@ -34,7 +36,11 @@ map("state", regions=str_to_lower(ec), col="maroon", fill=TRUE, add=TRUE)
 title("States used in Analysis")
 
 ```
-## Tornado Data Analysis
+Visual spatial analysis will be used to determine how many sharks and tornados fall into a buffer zone off the coast of the states seed in @fig-states. This buffer zone will represent an area where the formation of a tornado, combined with any presence of sharks, could create the conditions needed for the tornado to lift the shark and displace it inland near a major population center.
+
+Following this, tornados will be classified using a nearest neighbor classification system. A k-table test will be run to determine the appropriate number of neighbors to use, disregarding, conditioned on a minimum value of k=3 to inhibit the effects of any potential outliers. The value of k chosen will be the one that has the highest overall accuracy rate. Based on this k-test, we run a nearest neighbor classification system for all tornados captured within the buffer zone, which will classify tornados based on whether sharks are present within the tornado's path within the buffer. This will also result in a confidence estimate that will help us identify the likelihood of these two events occurring simultaneously.
+
+## Tornado Data Analysis Results
 
 ```{r}
 #| echo: false
@@ -101,17 +107,21 @@ segments(x0=clean.tor$BEGIN_LON,
          y0=clean.tor$BEGIN_LAT, 
          x1=clean.tor$END_LON,
          y1=clean.tor$END_LAT, 
-         col=adjustcolor("black", alpha.f=1.5), lwd=1)
+         col=adjustcolor("black", alpha.f=1.5), 
+         lwd=1.5)
 map("state", col="grey", fill=FALSE, add=TRUE)
 
 ```
-@fig-tornado-location-1 and @fig-tornado-location-2 show all recorded tornados in states that border the Gulf of Mexico^[As the majority of the data for both sharks and tornados was collected before 2025, it is internally referred to as the "Gulf of Mexico" rather than the "Gulf of America" in the raw data files. To avoid confusion and to maintain consistency, this report uses the older term "Gulf of Mexico" to describe the body of water located south of the U.S. to align with the internal raw data.] or the Atlantic Ocean. The color of each dot represents the EF rating of the tornado. Both graphs are nearly identical, due to the fact that tornadoes do not tend to travel far from their original spot in comparison to the size of the U.S. This plot will be transformed later in the analysis, and is included as a reference for future plots.
+@fig-tornado-location-1 shows all recorded tornados in states that border the Gulf of Mexico^[As the majority of the data for both sharks and tornados was collected before 2025, it is internally referred to as the "Gulf of Mexico" rather than the "Gulf of America" in the raw data files. To avoid confusion and to maintain consistency, this report uses the older term "Gulf of Mexico" to describe the body of water located south of the U.S. to align with the internal raw data.] or the Atlantic Ocean. The color of each dot represents the EF rating of the tornado. 
+
+@fig-tornado-location-2 shows the trajectories of all tornados from @fig-tornado-location-1 Most of the tornadoes do not tend to travel far from their original spot in comparison to the size of the U.S., and there is a much higher concentration of tornados moving northeast through states like Alabama and Mississippi.
 
 ## Shark Data Analysis 
 
 ```{r}
 #| echo: false
 #| label: tbl-sharks
+#| tbl-cap: "Frequency of Sharks Species caught off U.S. Coastal Waters in Sample"
 
 shark.survey <- read.csv("sharks.csv")
 names(shark.survey)[names(shark.survey) == "Longitude.of.capture"] <- "cap.long"
@@ -260,7 +270,6 @@ sharks.sf <- st_as_sf(sharks20,
 unqiue.sharks.sf <- unique(sharks.sf)
 sharks.matrix <- st_intersects(unqiue.sharks.sf, sharknado.zone, sparse=FALSE)
 unique.shark.count <- sum(rowSums(sharks.matrix)>0)
-paste("Number of Sharks in Sharnado Buffer Zone:", unique.shark.count)
 
 strong.tor_clean <- strong.tor[!is.na(strong.tor$BEGIN_LON) & !is.na(strong.tor$BEGIN_LAT),]
 sf_strong.tor <- st_as_sf(strong.tor_clean, 
@@ -269,16 +278,82 @@ sf_strong.tor <- st_as_sf(strong.tor_clean,
 unique.sharks.sf <- unique(sf_strong.tor)
 tor.matrix <- st_intersects(unique.sharks.sf, sharknado.zone, sparse=FALSE)
 unique.tor.count <- sum(rowSums(tor.matrix)>0)
-paste("Number of Tornados in Sharknado Buffer Zone:", unique.tor.count)
 
 ```
 
 @fig-sharknado-buffer-1 shows the starting position of tornados relative to the location of sharks in the Gulf of Mexico and the South Atlantic, conditioned on the tornado strength being EF3 or higher. An EF3 is the minimum required tornado strength needed for even a plausible chance of picking up sharks. In total, 334 tornados in the past 5 years have been observed with an EF rating of at least 3. 
 
-@fig-sharknado-buffer-2 shows the ending positions of tornados relative to the location of sharks in the Gulf of Mexico and the South Atlantic, with the same conditions. The dark colored dots represents the ending location of the tornado, while the grey dot connected via a line segment represents the tornado's original position. The blue dots represent shark captures from 2021-2025. Over the past 5 years, only 8 such tornados out of the total 321 in the sample are found within the buffer zone. Additionally, only 148 of the 2,831 sharks from the sample were captured within the buffer region where a sharknado could form.
+@fig-sharknado-buffer-2 shows the ending positions of tornados relative to the location of sharks in the Gulf of Mexico and the South Atlantic, with the same conditions. The dark colored dots represents the ending location of the tornado, while the grey dot connected via a line segment represents the tornado's original position. The blue dots represent shark captures from 2021-2025. Over the past 5 years, only `r unique.tor.count` such tornados out of the total 321 in the sample are found within the buffer zone. Additionally, only `r unique.shark.count` of the 2,831 sharks from the sample were captured within the buffer region where a shark-populated tornado could form.
 
-## Estimations
+## Nearest Neighbor Classification for Tornado Paths Located within Buffer
 
-For a worst-case scenario, we will assume that sharks will be unaware of the formation and location of a tornado, and will remain in the buffer zone as a result. In this worst-case scenario, independence is established between the probability that a shark exists in the buffer zone, and the probability that a tornado exists in the buffer zone. In this case, the probability that a shark exists in the same location as a tornado within the coastal buffer zone is 0.13%.
+```{r}
+#| echo: false
+#| warning: false
+#| label: tbl-shark-ktab
+#| tbl-cap: "k-Table for Nearest Neighbor Analysis (k>2)"
 
-Because this a worst-case scenario, there are a few limitations. First, independence is most likely not present in the real-world scenario. According to author Tom Sherrington, "While it’s not a universal certainty, storms can indeed influence shark distribution and bring them closer to shore due to a complex interplay of environmental factors ... [it’s] important to note that not all shark species respond to storms in the same way. Some species, like bull sharks, are known for their tolerance of brackish water and are more likely to be found closer to shore even under normal conditions. Others, like great white sharks, may venture closer to shore in search of larger prey that have been impacted by the storm" [@sherringtonStormsBringSharks2024]. As noted in @tbl-sharks, the most common species of sharks captured were the Atlantic Sharpnose and the Sandbar, and both species are sensitive to changes caused by tornados and hurricanes. This means that the calculated figure (0.13%) is likely an [overestimation of the true probability]{.underline}, given the fact that as a result of environmental conditions, these sharks will move further below the surface and/or away from the tornado. This means that the true probability will be less than 0.13%.
+library(class)
+set.seed(3490)
+
+sharks.zone <- unqiue.sharks.sf[rowSums(sharks.matrix)>0,]
+tor.zone <- sf_strong.tor[rowSums(tor.matrix)>0,]
+ocean.zone <- st_sample(sharknado.zone, size=2675)
+
+shark.loc <- st_coordinates(sharks.zone)
+ocean.loc <- st_coordinates(ocean.zone)
+train.data <- rbind(shark.loc, ocean.loc)
+test.data  <- st_coordinates(tor.zone)
+
+table.labels <- c(rep("Shark_Present", nrow(shark.loc)), 
+                  rep("No_Sharks_Present", nrow(ocean.loc)))
+
+summarize.class <- function(original, classify) {
+  class.table <- table(original, classify)
+  numb <- rowSums(class.table)
+  prop <- round(class.table/numb,4)
+  overall <- round(sum(diag(class.table))/sum(class.table),4)
+  list(class.table = class.table, prop = prop, overall.correct = overall)
+}
+
+set.seed(349251)
+save.results.cv <- matrix(data = NA, nrow = 8, ncol = 4)
+colnames(save.results.cv) <- c("K", "Prop.Shark", "Prop.NoShark", "Prop.Overall")
+
+for (K in 3:10) {
+  NNC.cv <- knn.cv(train = train.data, cl = table.labels, k = K)
+  NNC.cv.accuracy <- summarize.class(original = table.labels, classify = NNC.cv)
+  save.results.cv[K-2,] <- c(K, 
+                           NNC.cv.accuracy$prop[1,1], 
+                           NNC.cv.accuracy$prop[2,2], 
+                           NNC.cv.accuracy$overall.correct)
+}
+knitr::kable(save.results.cv)
+
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| label: tbl-shark-nnc
+#| tbl-cap: "Classifications of Tornados based on Location to Shark-Populated Waters (k=9)"
+
+set.seed(349251)
+knn.pred <- knn(train=train.data, 
+                      test=test.data, 
+                      cl=table.labels, 
+                      k=9, 
+                      prob=TRUE)
+
+knn.table <- data.frame(Tornado_Number=1:nrow(tor.zone),
+                        Classification=knn.pred,
+                        Confidence=attr(knn.pred, "prob"))
+knitr::kable(knn.table)
+
+```
+
+@tbl-shark-ktab is a table of k-Nearest Neighbor classification success rates. This table was used to select a value of k that best classifies tornado locations based on the proximity of sharks, conditioned on both the tornado and shark being located in the buffer. Based on this analysis, k=9 was used as it has a maximum overall success rate of 95.71%.
+
+@tbl-shark-nnc is a table of classifications for all 8 tornados located within the buffer zone, listed as either "Sharks Present" if sharks were found to be in close proximity to the starting location of the tornado, or "No Sharks Present" if no sharks were close enough. This table shows that every tornado was classified as having "No Sharks Present", with 5/8 having a confidence level fo 100%, while the minimum confidence was still 66.67%, well above chance.
+
+According to author Tom Sherrington, "While it’s not a universal certainty, storms can indeed influence shark distribution and bring them closer to shore due to a complex interplay of environmental factors ... [it’s] important to note that not all shark species respond to storms in the same way. Some species, like bull sharks, are known for their tolerance of brackish water and are more likely to be found closer to shore even under normal conditions. Others, like great white sharks, may venture closer to shore in search of larger prey that have been impacted by the storm" [@sherringtonStormsBringSharks2024]. As noted in @tbl-sharks, the most common species of sharks captured were the Atlantic Sharpnose and the Sandbar, and both species are sensitive to changes caused by tornados and hurricanes. This means that the calculated figure (95.71%) is likely an [underestimation of the true success rates]{.underline}, given the fact that as a result of environmental conditions, these sharks will move further below the surface and/or away from the tornado.

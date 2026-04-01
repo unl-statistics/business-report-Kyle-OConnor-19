@@ -18,7 +18,7 @@ The objective of this report is to analyze the probability that all of the condi
 
 # Conclusion 
 
-The findings from this report show that the likelihood that all of the conditions needed to form a tornado capable of lifting sharks along the coastal zone occurring simultaneously is extremely small. While the individual factors that affect this analysis can and will change with time, this report can safely conclude that this scenario cannot impact this company in any serious and tangible way. 
+The findings from this report show that the likelihood that all of the conditions needed to form a tornado capable of lifting sharks along the U.S. coastal zone occurring simultaneously is extremely small. While the individual factors that affect this analysis can and will change with time, this report can safely conclude that this scenario cannot impact this company in any serious and tangible way. 
 
 ::: {.aside}
 
