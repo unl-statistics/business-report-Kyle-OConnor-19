@@ -2,19 +2,20 @@
 title: "Draft: Executive Summary"
 ---
 
-This report analyzes [the likelihood that all of the conditions needed for a tornado to lift up a shark occur simultaneously within a coastal buffer zone off the U.S. mainland]{.underline}, which would allow for the possibility of the shark-populated tornado to hit a major coastal population center.
+This report analyzes the likelihood that all of the conditions needed for a tornado to lift up a shark occur simultaneously within a coastal buffer zone off the U.S. mainland, which would allow for the possibility of the shark-populated tornado to hit a major coastal population center.
 
-To do this, data collected by the National Oceanic and Atmospheric Association (NOAA) over the past five years was used to sort and categorize tornado and shark locations. First, the number of tornados and sharks located within a set coastal buffer zone was calculated using spatial analysis techniques. Then, each of the tornados contained within the buffer were classified based on whether or not they formed in proximity to sharks located within the buffer using a nearest neighbor classification method.
+To do this, data collected by the National Oceanic and Atmospheric Association (NOAA) over the past five years was used to sort and categorize tornado and shark locations. First, the number of tornados and sharks located within a set coastal buffer zone was calculated using spatial analysis techniques (@fig-sharknado-buffer-1). Then, each of the tornados contained within the buffer were classified based on whether or not they formed in proximity to sharks located within the buffer using a nearest neighbor classification method.
 
-Findings from this report show that the likelihood of a tornado forming within the presence of sharks over coastal waters is extremely low, due to the very small proportion of tornados that formed within the buffer (8/321) in addition to the low likelihood that sharks are present when tornados do form near coastal waters (@tbl-shark-nnc). We conclude that **a shark-populated tornado poses no serious or tangible threat to this company.**
+Findings from this report show that the likelihood of a tornado forming within the presence of sharks over coastal waters is extremely low, due to the very small proportion of tornados that formed within the buffer in addition to the low likelihood that sharks are present when tornados do form near coastal waters (@tbl-shark-nnc). We conclude that **a shark-populated tornado poses no serious or tangible threat to this company.**
 
-While the risk of a shark-populated tornado is extremely low, the risk of powerful tornados impacting our organization's goals and bottom line will continue to grow due to the effects of a warming global climate. This report provides the following recommendations for this company's future courses of action.
+While the risk of a shark-populated tornado is extremely low, the risk of powerful tornados impacting our organization's goals and bottom line will continue to grow due to the effects of a warming global climate. This report provides the following recommendations regarding this company's future courses of action:
 
 ::: {.callout-tip}
 
 ## Recommendations
 1)  The company should coordinate with its corporate and governmental partners to enact climate-friendly policies aimed at slowing the rate of global warming.
-2)  The company should review its current contingency plans regarding extreme weather events to ensure there are sufficient plans-of-action in the event of a strong tornado causing substantial damage to company property.
+
+2)  The company should review its current contingency procedures regarding extreme weather events to ensure there are sufficient plans-of-action in the event of a strong tornado causing substantial damage to company property.
 
 :::
 
