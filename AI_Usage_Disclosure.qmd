@@ -3,24 +3,17 @@ title: "AI-usage-disclosure"
 editor: visual
 ---
 
-[**AI Tool Used:**]{.underline} Google Gemini (No Version is Specified by Google)
-
-::: callout-note
-Then you need to list the date, or ask Gemini what version to reference.
-
-:::
-
+[**AI Tool Used:**]{.underline} Google Gemini V3
 
 [**Prompt:**]{.underline} I want to add a 20m boundary extending from the coast inland and out into the water for my plot. Along the way, show me where the new code is used in relation to my original code.
 
---------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 [**Gemini Response**]{.underline}
 
 To create a "zoomed-in" plot highlighting the 20-mile coastal zone, you can continue using the base R maps package while adjusting your xlim and ylim to focus on the Gulf and Atlantic coasts.
 
-To visualize the 20-mile offshore zone, we can draw a "buffer" by slightly expanding the state lines using the st_buffer function from the sf package (which is the modern standard for spatial data in R).
-Updated Base R Code
+To visualize the 20-mile offshore zone, we can draw a "buffer" by slightly expanding the state lines using the st_buffer function from the sf package (which is the modern standard for spatial data in R). Updated Base R Code
 
 ```{r}
 #| warning: false
@@ -132,8 +125,7 @@ legend("bottomright",
        bg = "white", cex = 0.8)
 ```
 
-To add a 20-mile border that extends inland as well, you just need to change how you subtract the shapes. Instead of cutting the land out of the buffer, you keep the full buffer as a "ribbon" that straddles the coastline.
-Here is the updated code to create a 40-mile total "Hazard Ribbon" (20 miles out + 20 miles in) and the zoomed-in plots:
+To add a 20-mile border that extends inland as well, you just need to change how you subtract the shapes. Instead of cutting the land out of the buffer, you keep the full buffer as a "ribbon" that straddles the coastline. Here is the updated code to create a 40-mile total "Hazard Ribbon" (20 miles out + 20 miles in) and the zoomed-in plots:
 
 ```{r}
 #| warning: false
@@ -265,22 +257,19 @@ legend("bottomright",
 
 ```
 
---------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
-[**AI Tool Used:**]{.underline} Google Gemini (No Version is Specified by Google)
-
+[**AI Tool Used:**]{.underline} Google Gemini V3
 
 [**Prompt:**]{.underline} I want to count the number of data points within the buffer zone. How can I do that. Please show me the code you use and then show how I can integrate it with the rest of my current code so that it works when I compile it.
 
---------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 [**Gemini Response**]{.underline}
 
-To count the number of dots (tornado or shark points) within your buffer, you need to convert your coordinate data into sf objects and then use st_intersects().
-Here is how you can do it for both your tornadoes and sharks:
+To count the number of dots (tornado or shark points) within your buffer, you need to convert your coordinate data into sf objects and then use st_intersects(). Here is how you can do it for both your tornadoes and sharks:
 
-1. Convert points to sf objects
-Since your data currently exists as data frames with longitude and latitude, convert them to spatial objects first:
+1.  Convert points to sf objects Since your data currently exists as data frames with longitude and latitude, convert them to spatial objects first:
 
 ```{r}
 #| warning: false
@@ -295,11 +284,9 @@ sharks_sf <- st_as_sf(sharks20,
                       crs = st_crs(states_sf))
 ```
 
-2. Count the intersections
-Use st_intersects() to find which points fall inside the buffer. This returns a list; checking the length of the unlisted result gives you the total count.
+2.  Count the intersections Use st_intersects() to find which points fall inside the buffer. This returns a list; checking the length of the unlisted result gives you the total count.
 
-To get your count to reflect unique locations (or unique sharks, if there is a Tag ID column), you need to filter for distinct rows before running the buffer intersection.
-The Fixed Code for your Count:
+To get your count to reflect unique locations (or unique sharks, if there is a Tag ID column), you need to filter for distinct rows before running the buffer intersection. The Fixed Code for your Count:
 
 Add this block at the very end of your script. It uses unique() on the coordinates to ensure each capture location is only counted once.
 
@@ -351,10 +338,7 @@ if(is.null(unique_tor_count)) unique_tor_count <- 0
 paste("Number of Unique Tornados in Buffer:", unique_tor_count)
 ```
 
-Why this works:
-st_as_sf: Turns your table into a spatial object the sf package understands.
-crs: It is vital that your points use the same Coordinate Reference System as your states_sf map.
-sparse = FALSE: Returns a simple True/False (logical) vector. Summing a logical vector counts every TRUE as 1.
+Why this works: st_as_sf: Turns your table into a spatial object the sf package understands. crs: It is vital that your points use the same Coordinate Reference System as your states_sf map. sparse = FALSE: Returns a simple True/False (logical) vector. Summing a logical vector counts every TRUE as 1.
 
 Differences Made:
 
@@ -380,6 +364,137 @@ unique.tor.sf <- unique(sf_strong.tor)
 tor_in_zone <- st_filter(unique.tor.sf, sharknado.zone)
 unique.tor.count <- nrow(tor_in_zone)
 paste("Number of Tornados in Sharknado Buffer Zone:", unique.tor.count)
+```
+
+------------------------------------------------------------------------
+
+[**AI Tool Used:**]{.underline} Google Gemini V3
+
+[**Prompt:**]{.underline} I want to do a nearest neighbor classification for sharks and tornados within the buffer zone. Use the knn function in library(class). make a table where each row corresponds to each tornado in the buffer zone.
+
+------------------------------------------------------------------------
+
+[**Gemini Response**]{.underline}
+
+```{r}
+#| warning: false
+
+library(class)
+library(sf)
+
+#Added in Extra code to make the Gemini code work.#
+sharks.sf <- st_as_sf(sharks20, 
+                      coords=c("cap.long", "cap.lat"), 
+                      crs=st_crs(states_sf))
+unqiue.sharks.sf <- unique(sharks.sf)
+
+# 1. Intersection (sparse=FALSE returns a 1-column matrix)
+sharks.matrix <- st_intersects(unqiue.sharks.sf, sharknado.zone, sparse=FALSE)
+
+# FIX: Use sum() on the logical matrix directly (No rowSums)
+unique.shark.count <- sum(sharks.matrix)
+paste("Number of Sharks in Buffer Zone:", unique.shark.count)
+
+strong.tor_clean <- strong.tor[!is.na(strong.tor$BEGIN_LON) & !is.na(strong.tor$BEGIN_LAT),]
+sf_strong.tor <- st_as_sf(strong.tor_clean, 
+                          coords=c("BEGIN_LON", "BEGIN_LAT"), 
+                          crs=st_crs(states_sf))
+
+# FIX: renamed this to unique.tor.sf to avoid overwriting your shark data
+unique.tor.sf <- unique(sf_strong.tor)
+tor.matrix <- st_intersects(unique.tor.sf, sharknado.zone, sparse=FALSE)
+
+# FIX: Use sum() directly
+unique.tor.count <- sum(tor.matrix)
+paste("Number of Tornados in Buffer Zone:", unique.tor.count)
+
+# --- 1. Filter points in the buffer (Safe Method) ---
+# Using [,1] ensures we treat the matrix as a simple TRUE/FALSE list
+sharks_in_buffer <- unqiue.sharks.sf[sharks.matrix[, 1], ]
+torns_in_buffer  <- unique.tor.sf[tor.matrix[, 1], ]
+
+# --- 2. Extract Coordinates ---
+train_shark <- st_coordinates(sharks_in_buffer)
+train_empty <- st_coordinates(st_sample(sharknado.zone, size = 2675, exact = TRUE))
+test_coords <- st_coordinates(torns_in_buffer)
+
+# --- 3. Combine training data ---
+train_coords <- rbind(train_shark, train_empty)
+
+# --- 4. Create labels ---
+n_shark <- nrow(train_shark)
+n_empty <- nrow(train_empty)
+train_labels <- c(rep("Shark_Present", n_shark), rep("No_Shark", n_empty))
+
+# --- 5. Run kNN and build report ---
+library(class)
+knn_prediction <- knn(train = train_coords, 
+                      test  = test_coords, 
+                      cl    = train_labels, 
+                      k     = 5, 
+                      prob  = TRUE)
+
+knn_report <- data.frame(
+  Tornado_ID     = seq_along(knn_prediction),
+  Classification = knn_prediction,
+  Confidence     = attr(knn_prediction, "prob")
+)
+```
+
+Differences Made:
+
+```{r}
+
+#Most of the changes made here were to the names to better fit my own naming conventions so I could understand the inputs and outputs better.
+sharks.zone <- unqiue.sharks.sf[sharks.matrix[, 1], ]
+tor.zone <- sf_strong.tor[tor.matrix[, 1], ]
+ocean.zone <- st_sample(sharknado.zone, size = 2675)
+
+shark.loc <- st_coordinates(sharks.zone)
+ocean.loc <- st_coordinates(ocean.zone)
+train.data <- rbind(shark.loc, ocean.loc)
+test.data  <- st_coordinates(tor.zone)
+
+table.labels <- c(rep("Shark_Present", nrow(shark.loc)), 
+                  rep("No_Sharks_Present", nrow(ocean.loc)))
+
+#Added Code adapted from Professor Bilder's 494 Class. This function creates a classification table that measures accuracy rates.#
+summarize.class <- function(original, classify) {
+  class.table <- table(original, classify)
+  numb <- rowSums(class.table)
+  prop <- round(class.table/numb,4)
+  overall <- round(sum(diag(class.table))/sum(class.table),4)
+  list(class.table = class.table, prop = prop, overall.correct = overall)
+}
+
+set.seed(349)
+save.results.cv <- matrix(data = NA, nrow = 10, ncol = 4)
+
+for (K in 1:10) {
+  NNC.cv <- knn.cv(train = train.data, cl = table.labels, k = K)
+  NNC.cv.accuracy <- summarize.class(original = table.labels, classify = NNC.cv)
+  save.results.cv[K,] <- c(K, 
+                           NNC.cv.accuracy$prop[1,1], 
+                           NNC.cv.accuracy$prop[2,2], 
+                           NNC.cv.accuracy$overall.correct)
+}
+#Altered the value of k from k=5 to k=1 based on the Results#
+knn.pred <- knn(train = train.data, 
+                test  = test.data, 
+                cl    = table.labels, 
+                k     = 1, 
+                prob  = TRUE)
+
+#This code is different from the final version I use for my actual project, as this page wouldn't compile unless it was self contained. Please refer to the draft-results section to see the final edited version.
+n_results <- length(knn.pred)
+conf_vals <- attr(knn.pred, "prob")
+if (is.null(conf_vals) || length(conf_vals) == 0) {
+  conf_vals <- rep(1, n_results)
+}
+knn.table <- data.frame(
+  Tornado_Number = seq_len(n_results),
+  Classification = as.character(knn.pred),
+  Confidence     = as.numeric(conf_vals))
+knitr::kable(knn.table)
 
 ```
---------------------------------------------------------------------------------
