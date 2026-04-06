@@ -291,7 +291,7 @@ unique.tor.count <- sum(rowSums(tor.matrix)>0)
 #| echo: false
 #| warning: false
 #| label: tbl-shark-ktab
-#| tbl-cap: "k-Table for Nearest Neighbor Analysis (k>2)"
+#| tbl-cap: "k-Table for Nearest Neighbor Analysis"
 
 library(class)
 set.seed(3490)
@@ -317,13 +317,13 @@ summarize.class <- function(original, classify) {
 }
 
 set.seed(349251)
-save.results.cv <- matrix(data = NA, nrow = 8, ncol = 4)
+save.results.cv <- matrix(data = NA, nrow = 30, ncol = 4)
 colnames(save.results.cv) <- c("K", "Prop.Shark", "Prop.NoShark", "Prop.Overall")
 
-for (K in 3:10) {
+for (K in 1:30) {
   NNC.cv <- knn.cv(train = train.data, cl = table.labels, k = K)
   NNC.cv.accuracy <- summarize.class(original = table.labels, classify = NNC.cv)
-  save.results.cv[K-2,] <- c(K, 
+  save.results.cv[K,] <- c(K, 
                            NNC.cv.accuracy$prop[1,1], 
                            NNC.cv.accuracy$prop[2,2], 
                            NNC.cv.accuracy$overall.correct)
@@ -336,13 +336,13 @@ knitr::kable(save.results.cv)
 #| echo: false
 #| warning: false
 #| label: tbl-shark-nnc
-#| tbl-cap: "Classifications of Tornados based on Location to Shark-Populated Waters (k=9)"
+#| tbl-cap: "Classifications of Tornados based on Location to Shark-Populated Waters (k=1)"
 
 set.seed(349251)
 knn.pred <- knn(train=train.data, 
                       test=test.data, 
                       cl=table.labels, 
-                      k=9, 
+                      k=1, 
                       prob=TRUE)
 
 knn.table <- data.frame(Tornado_Number=1:nrow(tor.zone),
