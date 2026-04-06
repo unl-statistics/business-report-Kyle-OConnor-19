@@ -36,3 +36,9 @@ It is also important to point out some limitations of this report. Due to the un
 ![Global Costs of Natural Disasters (including Tornados and Hurricanes). This data was collected by OurWorldinData.](damage-costs-from-natural-disasters.png){#fig-tor-cost}
 
 The negative physical and economic impacts stronger tornados will cause are real, as seen in @fig-tor-cost. The cost incurred after experiencing major weather events, which include strong tornados, has dramatically increased since 1980. Even if the likelihood of a shark-populated tornado is extremely small, the underlying causes of the changing conditions needed to form one, climate change and global warming, are a real concern that should be getting this company's attention. Scientists have repeatedly warned that Earth is approaching a threshold of no return as it relates to greenhouse gas emissions, where the damage caused by the continuously warming climate will be impossible to reverse. People, governments, and especially businesses like this one should be working to find sustainable solutions to reduce greenhouse emissions to prevent weather events like tornados from getting even stronger and more destructive. It is in this company's best interest to work towards slowing the effects of global warming by working with corporate and government partners to make immediate and sweeping changes.
+
+::: callout-note
+
+Spellcheck might be good, but otherwise this looks pretty great. You could stand to cite the tornado -> dixie alley thing and a few other minor claims in the intro/conclusion just to be safe.
+
+:::
