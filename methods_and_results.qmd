@@ -13,7 +13,7 @@ This research is being conducted based on tornado path and shark location data c
 -   South Carolina
 -   North Carolina
 
-@fig-states is provided as a visual reference of the locations of these states for your convenience. 
+@fig-states is provided as a visual reference of the locations of these states for convenience. 
 
 ```{r}
 #| echo: false
@@ -33,7 +33,7 @@ title("States used in Analysis")
 
 ```
 
-Visual spatial analysis will be used to determine how many sharks and tornados fall into a buffer zone off the coast of the states seed in @fig-states. This buffer zone will represent an area where the formation of a tornado, combined with any presence of sharks, could create the conditions needed for the tornado to lift the shark and displace it inland near a major population center.
+Spatial analysis will be used to determine how many sharks and tornados fall into a buffer zone off the coast of the states seed in @fig-states. This buffer zone will represent an area where the formation of a tornado, combined with any presence of sharks, could create the conditions needed for the tornado to lift the shark and displace it inland near a major population center.
 
 Following this, tornados will be classified using a nearest neighbor classification system. A k-table test will be run to determine the appropriate number of neighbors to use, where the value of k chosen will be the one that has the highest overall accuracy rate. Based on this k-test, we run a nearest neighbor classification system for all tornados captured within the buffer zone, which will classify tornados based on whether sharks are present within the tornado's path within the buffer. This will also result in a confidence estimate that will help us identify the likelihood of these two events occurring simultaneously.
 
@@ -289,7 +289,7 @@ unique.tor.count <- sum(rowSums(tor.matrix)>0)
 #| echo: false
 #| warning: false
 #| label: tbl-shark-ktab
-#| tbl-cap: "k-Table for Nearest Neighbor Analysis"
+#| tbl-cap: "k-Table for Nearest Neighbor Analysis for first 10 values of K"
 
 library(class)
 set.seed(3490)
@@ -329,12 +329,8 @@ for (K in 1:30) {
 knitr::kable(head(save.results.cv, 10))
 
 plot(x = save.results.cv[,1], y = save.results.cv[,4], 
-     main = "Cross-Validation Accuracy Rates for Values of K", panel.first = grid(), type = "o", 
-     col = "black", xlab = "K", ylab = "Accuracy Percenatge")
-legend("bottomright", legend = "Correct overall",
-       col = "black", lty = 1, pch = 1, 
-       bty = "n", cex = 0.95)
-
+     main = "Overall Accuracy Rates for Values of K", panel.first = grid(), type = "o", 
+     col = "black", xlab = "K", ylab = "Accuracy Percenatge (%)")
 
 ```
 

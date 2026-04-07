@@ -9,7 +9,7 @@ The Atlantic Sharpnose Shark (pictured above) was the most commonly observed spe
 
 :::
 
-Many shark species are sensitive to environmental changes caused by the presence of tornados and hurricanes, As a result, they are naturally inclined to move away from the surface near coastlines during an extreme weather event. This fact, along with the rare occurrences of strong coastal tornados moving inwards to begin with, prevents tornados from having access to substantial population of sharks to lift from the ocean.
+Many shark species are sensitive to environmental changes caused by the presence of tornados and hurricanes [@ImpactsClimateChange]. As a result, they are naturally inclined to move away from the surface near coastlines during an extreme weather event. This fact, along with the rare occurrences of strong coastal tornados moving inwards to begin with, prevents tornados from having access to substantial population of sharks to lift from the ocean.
 
 Due to the continuous effects of global warming, the conclusions found in this research may change with time. Future research could be done to monitor the shifting distribution of tornados relative to the migration patterns of sharks that exist along the U.S. coastline, as "Tornado Alley" shifts towards "Dixie Alley" and sharks permanently migrate to the North Atlantic. This report hypothesizes that the probability will continue to be low due to these environmental patterns shifting away from each other in different directions.
 
