@@ -10,7 +10,8 @@ book:
   chapters:
     - index.qmd
     - intro.qmd
-    - summary.qmd
+    - methods_and_results.qmd
+    - conclusion.qmd
     - references.qmd
   appendices:
     - draft-data-doc.qmd

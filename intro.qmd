@@ -1,5 +1,11 @@
 # Introduction
 
-This is a book created from markdown and executable code.
+The effects of climate change/global warming are becoming of increasing concern to many U.S. businesses, especially those who operate in coastal regions of the country. As weather events become more violent and unpredictable, there is a higher risk that businesses like ours may be fronting a sizable portion of the negative economic impact as a result of physical damage to property and a loss of consumer activity. 
 
-See @knuth84 for additional discussion of literate programming.
+The most commonly cited example of climate change-induced weather changes involves the increasing prevalence and strength of tornados. Over the past few decades, several studies have shown that "Tornado Alley", and tornados in general, are shifting southeast towards states like Louisiana, Alabama, Mississippi, Georgia, and Arkansas [@ColemanSpatial2024], as seen in @fig-tor. This geographic shift of tornado distribution has been colloquially referred to as "Dixie Alley" [@dixonTornadoRiskAnalysis2011], and this shift may become permanent as the effects of global warming level off in the future .
+
+![Shift in Tornado Density Locations from 1951-2020. The graphs and underlying data are by Coleman, Thompson and Forbes.](tornado-cbfv.png){#fig-tor}
+
+Another ecological shift involves changes to marine species' migration patterns in the Gulf of Mexico and Atlantic Ocean, including changes done by various shark species. Research has shown that shark populations are beginning to move north due to rising ocean temperatures in the Gulf of Mexico and the Florida coast [@OceanSharkStudy], leading to a higher concentration of sharks in the South Atlantic and even parts of the North Atlantic near New York, New Jersey, and New England.
+
+The objective of this report is to analyze the probability that all of the conditions needed for a tornado to lift up a shark occur simultaneously within a coastal buffer zone, which would allow for the possibility of the shark-populated tornado to hit a major coastal population center. These conditions include the strength of the tornado, the path of the tornado, and the species and location of sharks present in U.S. waters. To do this, this report will be using spatial analysis of data collected by the National Oceanic & Atmospheric Administration (NOAA). This report will continue with the methodology used for collecting and analyzing data, followed by a summary of our findings. Lastly, there will be a discussion of these results along with appropriate recommendations for the best practices this company should move forward with.

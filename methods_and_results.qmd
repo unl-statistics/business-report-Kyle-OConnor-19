@@ -1,8 +1,4 @@
----
-title: "Draft: Results"
----
-
-# Results {#sec-draft-results}
+# Methodology and Results {#sec-results}
 
 ## Methodology
 

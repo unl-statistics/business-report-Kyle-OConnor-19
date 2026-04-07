@@ -1,0 +1,20 @@
+# Conclusion
+
+The findings from this report show that the likelihood that all of the conditions needed to form a tornado capable of lifting sharks along the U.S. coastal zone occurring simultaneously is extremely small. While the individual factors that affect this analysis can and will change with time, this report can safely conclude that this scenario cannot impact this company in any serious and tangible way. 
+
+::: {.aside}
+
+![Atlantic Sharpnose Shark](sharpnose-shark.jpg){style="border: 2px solid black;"}
+The Atlantic Sharpnose Shark (pictured above) was the most commonly observed species of shark in the data, accounting for 49.84% of all observations.
+
+:::
+
+Many shark species are sensitive to environmental changes caused by the presence of tornados and hurricanes, As a result, they are naturally inclined to move away from the surface near coastlines during an extreme weather event. This fact, along with the rare occurrences of strong coastal tornados moving inwards to begin with, prevents tornados from having access to substantial population of sharks to lift from the ocean.
+
+Due to the continuous effects of global warming, the conclusions found in this research may change with time. Future research could be done to monitor the shifting distribution of tornados relative to the migration patterns of sharks that exist along the U.S. coastline, as "Tornado Alley" shifts towards "Dixie Alley" and sharks permanently migrate to the North Atlantic. This report hypothesizes that the probability will continue to be low due to these environmental patterns shifting away from each other in different directions.
+
+It is also important to point out some limitations of this report. Due to the unique nature of this report's subject matter, the data used in this analysis is a compilation of data collected from various sources and thus limits the findings only to the states where data could be collected about tornados and shark capture. Additionally, this report does not include analysis of hurricanes and their effects on the possibility of sharks being lifted and relocated onto land. Future research could examine the properties of strong hurricanes in relation to shark migration and location patterns, as hurricanes are more likely to move from ocean to land compared to tornados, potentially creating a different avenue for sharks to be displaced inland.
+
+![Global Costs of Natural Disasters (including Tornados and Hurricanes). This data was collected by OurWorldinData.](damage-costs-from-natural-disasters.png){#fig-tor-cost}
+
+The negative physical and economic impacts stronger tornados will cause are real, as seen in @fig-tor-cost. The cost incurred after experiencing major weather events, which include strong tornados, has dramatically increased since 1980 [@GlobalDamageCosts]. Even if the likelihood of a shark-populated tornado is extremely small, the underlying causes of the changing conditions needed to form one, climate change and global warming, are a real concern that should be getting this company's attention. Scientists have repeatedly warned that Earth is approaching a threshold of no return as it relates to greenhouse gas emissions, where the damage caused by the continuously warming climate will be impossible to reverse. People, governments, and especially businesses like this one should be working to find sustainable solutions to reduce greenhouse emissions to prevent weather events like tornados from getting even stronger and more destructive. It is in this company's best interest to work towards slowing the effects of global warming by working with corporate and government partners to make immediate and sweeping changes.
