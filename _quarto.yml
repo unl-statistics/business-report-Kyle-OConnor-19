@@ -3,7 +3,7 @@ project:
   output-dir: docs
 
 book:
-  title: "Analysis of the Conditions Required for Climate Changed Induced Shark-Lifting Tornados"
+  title: "Analysis of the Conditions Required for Climate-Change Induced Shark-Lifting Tornados"
   author: "Kyle O'Connor"
   page-footer:
     left: "Copyright 2025, Kyle O'Connor"
@@ -29,6 +29,9 @@ format:
     toc-title: "Table of Contents"
   pdf:
     documentclass: scrreprt
+    toc: true
+    number-sections: true
+    colorlinks: true
     toc-title: "Table of Contents"
 
 

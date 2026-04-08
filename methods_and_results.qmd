@@ -109,9 +109,10 @@ segments(x0=clean.tor$BEGIN_LON,
 map("state", col="grey", fill=FALSE, add=TRUE)
 
 ```
-@fig-tornado-location-1 shows all recorded tornados in states that border the Gulf of Mexico^[As the majority of the data for both sharks and tornados was collected before 2025, it is internally referred to as the "Gulf of Mexico" rather than the "Gulf of America" in the raw data files. To avoid confusion and to maintain consistency, this report uses the older term "Gulf of Mexico" to describe the body of water located south of the U.S. to align with the internal raw data.] or the Atlantic Ocean. The color of each dot represents the EF rating of the tornado. 
 
-@fig-tornado-location-2 shows the trajectories of all tornados from @fig-tornado-location-1 Most of the tornadoes do not tend to travel far from their original spot in comparison to the size of the U.S., and there is a much higher concentration of tornados moving northeast through states like Alabama and Mississippi.
+@fig-tornado-location-1 shows all recorded tornados in states that border the Gulf of Mexico^[As the majority of the data for both sharks and tornados was collected before 2025, it is internally referred to as the "Gulf of Mexico" rather than the "Gulf of America" in the raw data files. To avoid confusion and to maintain consistency, this report uses the older term "Gulf of Mexico" to describe the body of water located south of the U.S. to align with the internal raw data.] or the Atlantic Ocean. The color of each dot represents the EF rating of the tornado. In total, 3,116 observations were collected within the area of interest.
+
+@fig-tornado-location-2 shows the trajectories of all tornados from @fig-tornado-location-1. Most of the tornadoes do not tend to travel far from their original spot in comparison to the size of the U.S., and there is a much higher concentration of tornados moving northeast through states like Alabama and Mississippi.
 
 ## Shark Data Analysis 
 
@@ -139,8 +140,7 @@ knitr::kable(head(shark.species9, 9))
 ::: {.aside}
 
 ![Atlantic Sharpnose Shark](sharpnose-shark.jpg){style="border: 2px solid black;"}
-Atlantic Sharpnose Shark 
-
+Atlantic Sharpnose Shark
 (Rhizoprionodon Terranovae)
 
 --------------------------------------------------------------------------------
@@ -152,7 +152,7 @@ Sandbar Shark (Carcharhinus Plumbeus)
 
 --------------------------------------------------------------------------------
 
-@tbl-sharks shows the frequency of sharks species caught off the Gulf and South Atlantic Coasts between 2021-2025. The shark species with the highest observed frequency was the Rhizopriondon Terranovae, whose common name is the Atlantic Sharpnose Shark, with 1,411 total observations. The next highest was the Carcharhinus Plumbeus, whose common name is the Sandbar Shark, with 48 observations.
+@tbl-sharks shows the frequency of sharks species caught off the Gulf and South Atlantic Coasts between 2021-2025. The shark species with the highest observed frequency was the Rhizopriondon Terranovae, whose common name is the Atlantic Sharpnose Shark, with 1,411 observations. The next highest was the Carcharhinus Plumbeus, whose common name is the Sandbar Shark, with 48 observations.
 
 ```{r}
 #| echo: false
