@@ -37,7 +37,9 @@ Spatial analysis will be used to determine how many sharks and tornados fall int
 
 Following this, tornados will be classified using a nearest neighbor classification system. A k-table test will be run to determine the appropriate number of neighbors to use, where the value of k chosen will be the one that has the highest overall accuracy rate. Based on this k-test, we run a nearest neighbor classification system for all tornados captured within the buffer zone, which will classify tornados based on whether sharks are present within the tornado's path within the buffer. This will also result in a confidence estimate that will help us identify the likelihood of these two events occurring simultaneously.
 
-## Tornado Data Analysis Results
+## Results
+
+### Tornado Data Analysis Results
 
 ```{r}
 #| echo: false
@@ -114,7 +116,7 @@ map("state", col="grey", fill=FALSE, add=TRUE)
 
 @fig-tornado-location-2 shows the trajectories of all tornados from @fig-tornado-location-1. Most of the tornadoes do not tend to travel far from their original spot in comparison to the size of the U.S., and there is a much higher concentration of tornados moving northeast through states like Alabama and Mississippi.
 
-## Shark Data Analysis 
+### Shark Data Analysis 
 
 ```{r}
 #| echo: false
@@ -175,7 +177,7 @@ map("state", col="grey", fill=FALSE, add=TRUE)
 
 @fig-shark-capture shows the spatial distribution of shark capture locations since 2021. In total, 314 observations were captured between 2021-2025. It is important to note that the range of this data is only from the coast of Texas to North Carolina, and no data was able to be collected for sharks captured in the North Atlantic. Each dot represents one specific capture and a specific date, but it is possible that the same shark was captured at separate dates in separate or similar locations.
 
-## Shark-Tornado Spatial Cross-Analysis
+### Shark-Tornado Spatial Cross-Analysis
 
 According to an analysis done by Kim Martini of Deep Sea News, the minimum wind speed that could, in theory, lift up medium-to-large sized sharks would be equivalent to an EF4 tornado [@RecipeSharknadoDeep]. To create a conservative estimate for smaller sharks, which based on the previous analysis, is the most prevalent size of sharks in the Gulf of Mexico and the South Atlantic, these analyses are being conditioned on tornados classified at a minimum of an EF3.
 
@@ -282,8 +284,7 @@ unique.tor.count <- sum(rowSums(tor.matrix)>0)
 
 @fig-sharknado-buffer-2 shows the ending positions of tornados relative to the location of sharks in the Gulf of Mexico and the South Atlantic, with the same conditions. The dark colored dots represents the ending location of the tornado, while the grey dot connected via a line segment represents the tornado's original position. The blue dots represent shark captures from 2021-2025. Over the past 5 years, only `r unique.tor.count` such tornados out of the total 321 in the sample are found within the buffer zone. Additionally, only `r unique.shark.count` of the 2,831 sharks from the sample were captured within the buffer region where a shark-populated tornado could form.
 
-
-## Nearest Neighbor Classification for Tornado Paths Located within Buffer
+### Nearest Neighbor Classification for Tornado Paths Located within Buffer
 
 ```{r}
 #| echo: false
