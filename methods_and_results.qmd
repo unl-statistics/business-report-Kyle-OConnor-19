@@ -79,7 +79,7 @@ tornado <- storm[storm$EVENT_TYPE == "Tornado",]
 ec.tornado <- tornado[tornado$STATE %in% ec,]
 clean.tor <- ec.tornado[!is.na(ec.tornado$BEGIN_LON) & !is.na(ec.tornado$BEGIN_LAT) & !is.na(ec.tornado$TOR_F_SCALE), ]
 clean.tor$EF_SCALE <- as.numeric(str_remove(clean.tor$TOR_F_SCALE, "EF"))
-ef.scale <- viridis(6)
+ef.scale <- viridis(6, direction=-1)
 
 plot(clean.tor$BEGIN_LON, clean.tor$BEGIN_LAT, type="n", 
      xlab="Longitude",
