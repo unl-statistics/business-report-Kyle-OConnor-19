@@ -14,10 +14,8 @@ book:
     - conclusion.qmd
     - references.qmd
   appendices:
-    - draft-data-doc.qmd
+    - data-documentation.qmd
     - draft-results.qmd
-    - draft-intro-conclusions.qmd
-    - draft-exec-summary.qmd
     - AI_Usage_Disclosure.qmd
 
 bibliography: references.bib

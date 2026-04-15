@@ -1,0 +1,40 @@
+---
+title: "Data Documentation"
+author: Kyle O'Connor
+format: 
+  html:
+    link-citations: true
+  pdf:
+    link-citations: true
+bibliography: references.bib
+---
+
+## Source #1: [@StormEventsDatabase]
+
+### Data Information
+
+This data was collected by the National Oceanic and Atmospheric Administration (NOAA) to make predictive models about the financial and public health implications of future storms. This source provides information about different types of storms and weather warning events (such as tornados, high speed wins, hail, flash floods, etc.) including their location, human lives lost, damage costs, when it occurred, and how long it lasted. The data was collected yearly across the entire U.S., and it was compiled by the National Weather Service with the help of local and national public service workers. Our study uses their 2021-2025 findings, as they provide more accurate reflections of shifting weather dynamics due to the effects of climate change. Based on the structure of the data, some statistical methods that could be used include Multinomial Regression Analysis and Cluster Analysis, as the data includes location data that can be used to visually show and classify the data.
+
+### Data Structure
+
+This data comes in the form of a .csv file with 4 main variable classifications: Location-Based, Time-Based, Damage-Based, and Descriptive (General Description of the Event). Some important aspects about the data format are that days are split off from the month they occurred as separate variables, and that the data uses military time when describing the start and end times for each event. All variable names are defined here: [NOAA Storm Data Formatting Name Guide](https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/Storm-Data-Bulk-csv-Format.pdf).
+
+### Data Use and Collection Techniques
+
+Based on [NOAA Quality Guidelines](https://www.noaa.gov/organization/information-technology/policy-oversight/information-quality/information-quality-guidelines), it is bounded by federal law to ensure accuracy and high-quality reporting of information using several rounds of peer review with all Influential Scientific Information (ISI). Additionally, for any research that changes after an initial peer review, the new research is subject to a second peer review. For reuse purposes, the data is free and public government data, so it doesn't need a license. According to [NOAA Observation Systems Page](https://www.weather.gov/about/observation-equipment), they use a variety of measurement instruments including satellite, radar, buoy, weather balloons, and their own Automated Surface Observing System (ASOS) to collect information. They work in conjunction with local and national weather data collection groups to make sure their data is accurate. 
+
+--------------------------------------------------------------------------------
+
+## Source #2: [@SharkRedSnapper]
+
+### Data Information
+
+This data was collected by William Driggers of the National Oceanic and Atmospheric Administration (NOAA) to, as the author puts it, "provide abundance and distribution information on sharks and red snapper for use in regional stock assessments." The dataset has been compiled from data collected from 1995-2024, and it includes a geographical range spanning from Texas to the Carolinas. Based on the structure of the data, spatial analysis appears to be the best statistical analysis method to use, as the data focuses primarily on location and species data.
+
+### Data Structure
+
+This data comes in the form of a .csv file with 3 main variable types: Taxon (Species), Time, and Location. Some important aspects about the data format are that data uses the scientific name rather than their common name, so a conversion to the common name would be best fit for our study. The data also contains 2 date columns, one for the date and one that is just the year.
+
+### Data Use and Collection Techniques
+
+Based on [NOAA Quality Guidelines](https://www.noaa.gov/organization/information-technology/policy-oversight/information-quality/information-quality-guidelines), it is bounded by federal law to ensure accuracy and high-quality reporting of information using several rounds of peer review with all Influential Scientific Information (ISI). Additionally, for any research that changes after an initial peer review, the new research is subject to a second peer review. For reuse purposes, the data is free and public government data, so it doesn't need a license. For this specific dataset, a personal request was made to the author to obtain the dataset itself, as it is currently not available online. The researchers used a standard marine-life tagging system to identify sharks. 

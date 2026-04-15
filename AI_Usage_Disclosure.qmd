@@ -1,5 +1,5 @@
 ---
-title: "AI-usage-disclosure"
+title: "AI Usage Disclosure"
 editor: visual
 ---
 
@@ -444,6 +444,7 @@ knn_report <- data.frame(
 Differences Made:
 
 ```{r}
+#| warning: FALSE
 
 #Most of the changes made here were to the names to better fit my own naming conventions so I could understand the inputs and outputs better.
 sharks.zone <- unqiue.sharks.sf[sharks.matrix[, 1], ]
@@ -491,10 +492,11 @@ conf_vals <- attr(knn.pred, "prob")
 if (is.null(conf_vals) || length(conf_vals) == 0) {
   conf_vals <- rep(1, n_results)
 }
+
 knn.table <- data.frame(
   Tornado_Number = seq_len(n_results),
   Classification = as.character(knn.pred),
   Confidence     = as.numeric(conf_vals))
-knitr::kable(knn.table)
+#knitr::kable(knn.table)
 
 ```
