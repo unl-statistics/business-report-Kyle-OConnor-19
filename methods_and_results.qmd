@@ -39,7 +39,7 @@ title("States used in Analysis")
 
 Spatial analysis will be used to determine how many sharks and tornados fall into a buffer zone off the coast of the states seen in @fig-states. This buffer zone will represent an area where the formation of a tornado, combined with any presence of sharks, could create the conditions needed for the tornado to lift the shark and displace it inland near a major population center.
 
-Following this, tornados will be classified using a nearest neighbor classification system. A k-table test will be run to determine the appropriate number of neighbors to use, where the value of k chosen will be the one that has the highest overall accuracy rate. Based on this k-test, we run a nearest neighbor classification system for all tornados captured within the buffer zone, which will classify tornados based on whether sharks are present within the tornado's path within the buffer. This will also result in a confidence estimate that will help us identify the likelihood of these two events occurring simultaneously. We use a K-Nearest Neighbors approach because the data is location-based/geographic in nature, and identifying overlapping and related regions through a binary classification system (shark presence against non-shark presence) are an integral part of this analysis.
+Following this, tornados will be classified using a nearest neighbor classification system. A k-table test will be run to determine the appropriate number of neighbors to use, where the value of k chosen will be the one that has the highest overall accuracy rate. Based on this k-test, we run a nearest neighbor classification system for all tornados captured within the buffer zone, which will classify tornados based on whether sharks are present within the tornado's path within the buffer. This will also result in a confidence estimate that will help us identify the likelihood of these two events occurring simultaneously. We use a k-Nearest Neighbors approach because the data is location-based/geographic in nature, and identifying overlapping and related regions through a binary classification system (shark presence against non-shark presence) are an integral part of this analysis.
 
 ## Results
 
@@ -340,13 +340,14 @@ knitr::kable(head(save.results.cv, 10))
 plot(x = save.results.cv[,1], y = save.results.cv[,4], 
      main = "Overall Accuracy Rates for Values of K", panel.first = grid(), type = "o", 
      col = "black", xlab = "K", ylab = "Accuracy Percenatge (%)")
+abline(v=9, lty="dashed", col="maroon")
 
 ```
 
 ::: callout-warning
 ## Rationale for Selecting the Appropriate Value of K
 
-The highest value based on this analysis was K=9, which produced an overall accuracy rate of 95.57%. The initial drop from k=1 to k=4 is disregarded due to the higher likelihood of an outlier affecting accuracy rates with a smaller number of neighbors (smaller value of K). After the leveling off seen at K=6, the value of K with the highest accuracy is used.
+The highest value based on this analysis was k=9, which produced an overall accuracy rate of 95.57%. The initial drop from k=1 to k=4 is disregarded due to the higher likelihood of an outlier affecting accuracy rates with a smaller number of neighbors (smaller value of k). After the leveling off seen at k=6, the value of k with the highest accuracy is used.
 :::
 
 ```{r}
