@@ -10,13 +10,13 @@ book:
   chapters:
     - index.qmd
     - intro.qmd
-    - methods_and_results.qmd
+    - methods-and-results.qmd
     - conclusion.qmd
     - references.qmd
   appendices:
     - data-documentation.qmd
     - draft-results.qmd
-    - AI_Usage_Disclosure.qmd
+    - AI-Usage-Disclosure.qmd
 
 bibliography: references.bib
 
