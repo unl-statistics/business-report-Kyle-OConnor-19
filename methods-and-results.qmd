@@ -343,7 +343,7 @@ knitr::kable(head(save.results.cv, 10))
 #| echo: false
 #| warning: false
 #| label: fig-shark-ktab
-#| fig-cap: "Overall Accuracy Plot for first 10 values of K based on the K-Table"
+#| fig-cap: "Overall Accuracy Plot for first 10 values of K based on the k-Table"
 
 plot(x = save.results.cv[,1], y = save.results.cv[,4], 
      main = "Overall Accuracy Rates for Values of K", panel.first = grid(), type = "o", 
