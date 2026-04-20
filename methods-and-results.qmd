@@ -337,6 +337,14 @@ for (K in 1:30) {
 }
 knitr::kable(head(save.results.cv, 10))
 
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| label: fig-shark-ktab
+#| fig-cap: "Overall Accuracy Plot for first 10 values of K based on the K-Table"
+
 plot(x = save.results.cv[,1], y = save.results.cv[,4], 
      main = "Overall Accuracy Rates for Values of K", panel.first = grid(), type = "o", 
      col = "black", xlab = "K", ylab = "Accuracy Percenatge (%)")
@@ -370,7 +378,7 @@ knitr::kable(knn.table)
 
 ```
 
-@tbl-shark-ktab is a table of k-Nearest Neighbor classification success rates. This table was used to select a value of k that best classifies tornado locations based on the proximity of sharks, conditioned on both the tornado and shark being located in the buffer. Based on this analysis, k=9 was used as it has a maximum overall success rate of 95.57%.
+@tbl-shark-ktab is a table of k-Nearest Neighbor classification success rates, and @fig-shark-ktab is a plot showing the change in success rates based on the value of K. This table was used to select a value of k that best classifies tornado locations based on the proximity of sharks, conditioned on both the tornado and shark being located in the buffer. Based on this analysis, k=9 was used as it has a maximum overall success rate of 95.57%.
 
 @tbl-shark-nnc is a table of classifications for all 8 tornados located within the buffer zone, listed as either "Sharks Present" if sharks were found to be in close proximity to the starting location of the tornado, or "No Sharks Present" if no sharks were found to be close enough. This table shows that every tornado was classified as having "No Sharks Present", with 5 of the 8 tornados having a confidence level of 100%, while the minimum confidence was still 66.67%, well above chance.
 
