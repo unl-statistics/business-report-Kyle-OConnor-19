@@ -16,7 +16,7 @@ book:
   appendices:
     - data-documentation.qmd
     - draft-results.qmd
-    - AI-Usage-Disclosure.qmd
+    - AI-usage-disclosure.qmd
 
 bibliography: references.bib
 
