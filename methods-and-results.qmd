@@ -345,7 +345,7 @@ abline(v=9, lty="dashed", col="maroon")
 ```
 
 ::: callout-warning
-## Rationale for Selecting the Appropriate Value of K
+## Rationale for Selecting an Appropriate Value of K
 
 The highest value based on this analysis was k=9, which produced an overall accuracy rate of 95.57%. The initial drop from k=1 to k=4 is disregarded due to the higher likelihood of an outlier affecting accuracy rates with a smaller number of neighbors (smaller value of k). After the leveling off seen at k=6, the value of k with the highest accuracy is used.
 :::
