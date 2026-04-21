@@ -29,6 +29,7 @@ library(maps)
 library(stringr)
 library(viridis)
 library(class)
+RNGkind(sample.kind="Rounding")
 set.seed(251349262)
 
 ec <- c("TEXAS", "LOUISIANA", "MISSISSIPPI", "ALABAMA", "FLORIDA", "GEORGIA", "SOUTH CAROLINA", "NORTH CAROLINA")
@@ -36,8 +37,6 @@ ec <- c("TEXAS", "LOUISIANA", "MISSISSIPPI", "ALABAMA", "FLORIDA", "GEORGIA", "S
 map("state", col="grey", fill=FALSE)
 map("state", regions=str_to_lower(ec), col="maroon", fill=TRUE, add=TRUE)
 title("States used in Analysis")
-
-sessioninfo::session_info()
 
 ```
 
@@ -303,6 +302,7 @@ unique.tor.count <- sum(rowSums(tor.matrix)>0)
 #| tbl-cap: "k-Table for Nearest Neighbor Analysis for first 10 values of K"
 
 sharks.zone <- unqiue.sharks.sf[rowSums(sharks.matrix)>0,]
+sharks.zone <- sharks.zone[order(st_coordinates(sharks.zone)[,1]),]
 tor.zone <- sf_strong.tor[rowSums(tor.matrix)>0,]
 ocean.zone <- st_sample(sharknado.zone, size=2675)
 
