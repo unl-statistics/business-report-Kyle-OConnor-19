@@ -203,6 +203,9 @@ According to an analysis done by Kim Martini of Deep Sea News, the minimum wind 
 #|   - "Ending Tornado Positions from 2021-2025 (Line-Segments show Tornado Path)"
 #| label: fig-sharknado-buffer
 
+set.seed(251349262)
+RNGkind(sample.kind="Rounding")
+
 library(sf)
 
 strong.tor <- clean.tor[clean.tor$EF_SCALE>=3,]
@@ -273,6 +276,9 @@ legend("bottomright",
 #| echo: false
 #| warning: false
 
+set.seed(251349262)
+RNGkind(sample.kind="Rounding")
+
 sharks.sf <- st_as_sf(sharks20, 
                       coords=c("cap.long", "cap.lat"), 
                       crs=st_crs(states_sf))
@@ -301,6 +307,9 @@ unique.tor.count <- sum(rowSums(tor.matrix)>0)
 #| warning: false
 #| label: tbl-shark-ktab
 #| tbl-cap: "k-Table for Nearest Neighbor Analysis for first 10 values of K"
+
+set.seed(251349262)
+RNGkind(sample.kind="Rounding")
 
 sharks.zone <- unqiue.sharks.sf[rowSums(sharks.matrix)>0,]
 sharks.zone <- sharks.zone[order(st_coordinates(sharks.zone)[,1]),]
@@ -344,6 +353,9 @@ knitr::kable(head(save.results.cv, 10))
 #| label: fig-shark-ktab
 #| fig-cap: "Overall Accuracy Plot for first 10 values of K based on the k-Table"
 
+set.seed(251349262)
+RNGkind(sample.kind="Rounding")
+
 plot(x=save.results.cv[,1],
      y=save.results.cv[,4], 
      main="Overall Accuracy Rates for Values of K", 
@@ -368,6 +380,9 @@ The highest value based on this analysis was k=9, which produced an overall accu
 #| warning: false
 #| label: tbl-shark-nnc
 #| tbl-cap: "Classifications of Tornados based on Location to Shark-Populated Waters (k=9)"
+
+set.seed(251349262)
+RNGkind(sample.kind="Rounding")
 
 knn.pred <- knn(train=train.data, 
                       test=test.data, 
