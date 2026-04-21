@@ -25,12 +25,13 @@ This research is being conducted based on tornado path and shark location data c
 #| label: fig-states
 #| fig-cap: "Map of States used in this Analysis. Maps that are colored represent states whose data was used in the analysis, as they had available data about both tornados and sharks"
 
+set.seed(251349262)
+RNGkind(sample.kind="Rounding")
+
 library(maps)
 library(stringr)
 library(viridis)
 library(class)
-RNGkind(sample.kind="Rounding")
-set.seed(251349262)
 
 ec <- c("TEXAS", "LOUISIANA", "MISSISSIPPI", "ALABAMA", "FLORIDA", "GEORGIA", "SOUTH CAROLINA", "NORTH CAROLINA")
 
@@ -343,7 +344,6 @@ knitr::kable(head(save.results.cv, 10))
 #| label: fig-shark-ktab
 #| fig-cap: "Overall Accuracy Plot for first 10 values of K based on the k-Table"
 
-set.seed(251349262)
 plot(x = save.results.cv[,1], y = save.results.cv[,4], 
      main = "Overall Accuracy Rates for Values of K", panel.first = grid(), type = "o", 
      col = "black", xlab = "K", ylab = "Accuracy Percenatge (%)")
