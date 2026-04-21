@@ -25,15 +25,19 @@ This research is being conducted based on tornado path and shark location data c
 #| label: fig-states
 #| fig-cap: "Map of States used in this Analysis. Maps that are colored represent states whose data was used in the analysis, as they had available data about both tornados and sharks"
 
-#| 
 library(maps)
 library(stringr)
+library(viridis)
+library(class)
+set.seed(251349262)
 
 ec <- c("TEXAS", "LOUISIANA", "MISSISSIPPI", "ALABAMA", "FLORIDA", "GEORGIA", "SOUTH CAROLINA", "NORTH CAROLINA")
 
 map("state", col="grey", fill=FALSE)
 map("state", regions=str_to_lower(ec), col="maroon", fill=TRUE, add=TRUE)
 title("States used in Analysis")
+
+sessioninfo::session_info()
 
 ```
 
@@ -75,8 +79,6 @@ storm <- rbind(tor21, tor22, tor23, tor24, tor25)
 #|   - "Starting Tornado Positions from 2021-2025"
 #|   - "Tornado Trajectories from 2021-2025"
 #| label: fig-tornado-location
-
-library(viridis)
 
 tornado <- storm[storm$EVENT_TYPE == "Tornado",]
 
@@ -202,7 +204,6 @@ According to an analysis done by Kim Martini of Deep Sea News, the minimum wind 
 #| label: fig-sharknado-buffer
 
 library(sf)
-set.seed(251349262)
 
 strong.tor <- clean.tor[clean.tor$EF_SCALE>=3,]
 sf_use_s2(FALSE)
@@ -301,9 +302,6 @@ unique.tor.count <- sum(rowSums(tor.matrix)>0)
 #| label: tbl-shark-ktab
 #| tbl-cap: "k-Table for Nearest Neighbor Analysis for first 10 values of K"
 
-library(class)
-set.seed(251349262)
-
 sharks.zone <- unqiue.sharks.sf[rowSums(sharks.matrix)>0,]
 tor.zone <- sf_strong.tor[rowSums(tor.matrix)>0,]
 ocean.zone <- st_sample(sharknado.zone, size=2675)
@@ -345,6 +343,7 @@ knitr::kable(head(save.results.cv, 10))
 #| label: fig-shark-ktab
 #| fig-cap: "Overall Accuracy Plot for first 10 values of K based on the k-Table"
 
+set.seed(251349262)
 plot(x = save.results.cv[,1], y = save.results.cv[,4], 
      main = "Overall Accuracy Rates for Values of K", panel.first = grid(), type = "o", 
      col = "black", xlab = "K", ylab = "Accuracy Percenatge (%)")
@@ -364,7 +363,6 @@ The highest value based on this analysis was k=9, which produced an overall accu
 #| label: tbl-shark-nnc
 #| tbl-cap: "Classifications of Tornados based on Location to Shark-Populated Waters (k=9)"
 
-set.seed(251349262)
 knn.pred <- knn(train=train.data, 
                       test=test.data, 
                       cl=table.labels, 
