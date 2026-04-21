@@ -202,6 +202,7 @@ According to an analysis done by Kim Martini of Deep Sea News, the minimum wind 
 #| label: fig-sharknado-buffer
 
 library(sf)
+set.seed(251349262)
 
 strong.tor <- clean.tor[clean.tor$EF_SCALE>=3,]
 sf_use_s2(FALSE)
@@ -301,7 +302,7 @@ unique.tor.count <- sum(rowSums(tor.matrix)>0)
 #| tbl-cap: "k-Table for Nearest Neighbor Analysis for first 10 values of K"
 
 library(class)
-set.seed(3490)
+set.seed(251349262)
 
 sharks.zone <- unqiue.sharks.sf[rowSums(sharks.matrix)>0,]
 tor.zone <- sf_strong.tor[rowSums(tor.matrix)>0,]
@@ -323,7 +324,6 @@ summarize.class <- function(original, classify) {
   list(class.table = class.table, prop = prop, overall.correct = overall)
 }
 
-set.seed(349251)
 save.results.cv <- matrix(data = NA, nrow = 30, ncol = 4)
 colnames(save.results.cv) <- c("K", "Prop.Shark", "Prop.NoShark", "Prop.Overall")
 
@@ -364,7 +364,7 @@ The highest value based on this analysis was k=9, which produced an overall accu
 #| label: tbl-shark-nnc
 #| tbl-cap: "Classifications of Tornados based on Location to Shark-Populated Waters (k=9)"
 
-set.seed(349251)
+set.seed(251349262)
 knn.pred <- knn(train=train.data, 
                       test=test.data, 
                       cl=table.labels, 
