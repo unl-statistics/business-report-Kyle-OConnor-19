@@ -187,7 +187,7 @@ map("state", col="grey", fill=FALSE, add=TRUE)
 
 @fig-shark-capture shows the spatial distribution of shark capture locations since 2021. In total, 314 observations were captured between 2021-2025. It is important to note that the range of this data is only from the coast of Texas to North Carolina, and no data was able to be collected for sharks captured in the North Atlantic. Each dot represents one specific capture and a specific date, but it is possible that the same shark was captured at separate dates in separate or similar locations.
 
-### Shark-Tornado Spatial Cross-Analysis
+### Shark and Tornado Spatial Cross-Analysis
 
 According to an analysis done by Kim Martini of Deep Sea News, the minimum wind speed that could, in theory, lift up medium-to-large sized sharks would be equivalent to an EF4 tornado [@RecipeSharknadoDeep]. To create a conservative estimate for smaller sharks, which based on the previous analysis, is the most prevalent size of sharks in the Gulf of Mexico and the South Atlantic, these analyses are being conditioned on tornados classified at a minimum of an EF3.
 
@@ -276,7 +276,7 @@ legend("bottomright",
 #| echo: false
 #| warning: false
 
-set.seed(251349262)
+set.seed(251349)
 RNGkind(sample.kind="Rounding")
 
 sharks.sf <- st_as_sf(sharks20, 
@@ -308,7 +308,7 @@ unique.tor.count <- sum(rowSums(tor.matrix)>0)
 #| label: tbl-shark-ktab
 #| tbl-cap: "k-Table for Nearest Neighbor Analysis for first 10 values of K"
 
-set.seed(251349262)
+set.seed(251349)
 RNGkind(sample.kind="Rounding")
 
 sharks.zone <- unqiue.sharks.sf[rowSums(sharks.matrix)>0,]
@@ -353,7 +353,7 @@ knitr::kable(head(save.results.cv, 10))
 #| label: fig-shark-ktab
 #| fig-cap: "Overall Accuracy Plot for first 10 values of K based on the k-Table"
 
-set.seed(251349262)
+set.seed(251349)
 RNGkind(sample.kind="Rounding")
 
 plot(x=save.results.cv[,1],
@@ -365,14 +365,16 @@ plot(x=save.results.cv[,1],
      xlab="K", 
      ylab="Accuracy Percenatge (%)",
      ylim=c(0.9475 , 0.97))
-abline(v=9, lty="dashed", col="maroon")
+k.max <- save.results.cv[save.results.cv[,1] > 4,][which.max(save.results.cv[save.results.cv[,1]>4,4]), 1]
+k.accuracy <- save.results.cv[save.results.cv[, 1] == k.max, 4]
+abline(v=k.max, lty="dashed", col="maroon")
 
 ```
 
 ::: callout-warning
 ## Rationale for Selecting an Appropriate Value of K
 
-The highest value based on this analysis was k=9, which produced an overall accuracy rate of 95.78%. The initial drop from k=1 to k=4 is disregarded due to the higher likelihood of an outlier affecting accuracy rates with a smaller number of neighbors (smaller value of k). After the leveling off seen at k=6, the value of k with the highest accuracy is used.
+The highest value based on this analysis was `r k.max`, which produced an overall accuracy rate of `r k.accuracy`. The initial drop from k=1 to k=4 is disregarded due to the higher likelihood of an outlier affecting accuracy rates with a smaller number of neighbors (smaller value of k). 
 :::
 
 ```{r}
@@ -397,8 +399,8 @@ knitr::kable(knn.table)
 
 ```
 
-@tbl-shark-ktab is a table of k-Nearest Neighbor classification success rates, and @fig-shark-ktab is a plot showing the change in success rates based on the value of K. This table was used to select a value of k that best classifies tornado locations based on the proximity of sharks, conditioned on both the tornado and shark being located in the buffer. Based on this analysis, k=9 was used as it has a maximum overall success rate of 95.78%.
+@tbl-shark-ktab is a table of k-Nearest Neighbor classification success rates, and @fig-shark-ktab is a plot showing the change in success rates based on the value of K. This table was used to select a value of k that best classifies tornado locations based on the proximity of sharks, conditioned on both the tornado and shark being located in the buffer. Based on this analysis, `r k.max` was used as it has a maximum overall success rate of `r k.accuracy`.
 
-@tbl-shark-nnc is a table of classifications for all 8 tornados located within the buffer zone, listed as either "Sharks Present" if sharks were found to be in close proximity to the starting location of the tornado, or "No Sharks Present" if no sharks were found to be close enough. This table shows that every tornado was classified as having "No Sharks Present", with 5 of the 8 tornados having a confidence level of 100%, while the minimum confidence was still 66.67%, well above chance.
+@tbl-shark-nnc is a table of classifications for all 8 tornados located within the buffer zone, listed as either "Sharks Present" if sharks were found to be in close proximity to the starting location of the tornado, or "No Sharks Present" if no sharks were found to be close enough. The table shows all 8 tornados fell under the classification of "No Sharks Present".
 
-According to author Tom Sherrington, "While it’s not a universal certainty, storms can indeed influence shark distribution and bring them closer to shore due to a complex interplay of environmental factors ... \[it’s\] important to note that not all shark species respond to storms in the same way. Some species, like bull sharks, are known for their tolerance of brackish water and are more likely to be found closer to shore even under normal conditions. Others, like great white sharks, may venture closer to shore in search of larger prey that have been impacted by the storm" [@sherringtonStormsBringSharks2024]. As noted in @tbl-sharks, the most common species of sharks captured were the Atlantic Sharpnose and the Sandbar, and both species are sensitive to changes caused by tornados and hurricanes. This means that the calculated figure (95.78%) is likely an *underestimation of the true success rate*, given the fact that as a result of environmental conditions, these sharks will move further below the surface and/or away from the tornado.
+According to author Tom Sherrington, "While it’s not a universal certainty, storms can indeed influence shark distribution and bring them closer to shore due to a complex interplay of environmental factors ... \[it’s\] important to note that not all shark species respond to storms in the same way. Some species, like bull sharks, are known for their tolerance of brackish water and are more likely to be found closer to shore even under normal conditions. Others, like great white sharks, may venture closer to shore in search of larger prey that have been impacted by the storm" [@sherringtonStormsBringSharks2024]. As noted in @tbl-sharks, the most common species of sharks captured were the Atlantic Sharpnose and the Sandbar, and both species are sensitive to changes caused by tornados and hurricanes. This means that the calculated figure (`r k.max`) is likely an *underestimation of the true success rate*, given the fact that as a result of environmental conditions, these sharks will move further below the surface and/or away from the tornado.
