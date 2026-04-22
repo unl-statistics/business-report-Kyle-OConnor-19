@@ -366,7 +366,7 @@ plot(x=save.results.cv[,1],
      ylab="Accuracy Percenatge (%)",
      ylim=c(0.9475 , 0.97))
 k.max <- save.results.cv[save.results.cv[,1] > 4,][which.max(save.results.cv[save.results.cv[,1]>4,4]), 1]
-k.accuracy <- save.results.cv[save.results.cv[, 1] == k.max, 4]
+k.accuracy <- save.results.cv[save.results.cv[,1] == k.max, 4]
 abline(v=k.max, lty="dashed", col="maroon")
 
 ```
