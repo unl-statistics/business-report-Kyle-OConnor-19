@@ -308,7 +308,7 @@ unique.tor.count <- sum(rowSums(tor.matrix)>0)
 #| label: tbl-shark-ktab
 #| tbl-cap: "k-Table for Nearest Neighbor Analysis for first 10 values of K"
 
-set.seed(251349)
+set.seed(251349262)
 RNGkind(sample.kind="Rounding")
 
 sharks.zone <- unqiue.sharks.sf[rowSums(sharks.matrix)>0,]
@@ -353,7 +353,7 @@ knitr::kable(head(save.results.cv, 10))
 #| label: fig-shark-ktab
 #| fig-cap: "Overall Accuracy Plot for first 10 values of K based on the k-Table"
 
-set.seed(251349)
+set.seed(251349262)
 RNGkind(sample.kind="Rounding")
 
 plot(x=save.results.cv[,1],
