@@ -399,7 +399,7 @@ knitr::kable(knn.table)
 
 ```
 
-@tbl-shark-ktab is a table of k-Nearest Neighbor classification success rates, and @fig-shark-ktab is a plot showing the change in success rates based on the value of K. This table was used to select a value of k that best classifies tornado locations based on the proximity of sharks, conditioned on both the tornado and shark being located in the buffer. Based on this analysis, `r k.max` was used as it has a maximum overall success rate of `r k.accuracy`.
+@tbl-shark-ktab is a table of k-Nearest Neighbor classification success rates, and @fig-shark-ktab is a plot showing the change in success rates based on the value of K. This table was used to select a value of k that best classifies tornado locations based on the proximity of sharks, conditioned on both the tornado and shark being located in the buffer. Based on this analysis, k=`r k.max` was used as it has a maximum overall success rate of `r k.accuracy`.
 
 @tbl-shark-nnc is a table of classifications for all 8 tornados located within the buffer zone, listed as either "Sharks Present" if sharks were found to be in close proximity to the starting location of the tornado, or "No Sharks Present" if no sharks were found to be close enough. The table shows all 8 tornados fell under the classification of "No Sharks Present", indicating a low risk of sharks being picked up by the tornadoes that fell within the buffer zone based on their path.
 
