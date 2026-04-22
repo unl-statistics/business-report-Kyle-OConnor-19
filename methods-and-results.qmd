@@ -2,7 +2,7 @@
 
 ## Methodology
 
-This research is being conducted based on tornado path and shark location data collected between January 2021 and December 2025. This was done because a shifting climate has pushed tornadoes southeast [@ColemanSpatial2024], while shark populations are beginning to move into North Atlantic coasts due to rising ocean temperatures in the Gulf of Mexico and the South Atlantic [@OceanSharkStudy]. While it is impossible to assess the full impact of these climate shifts, as they are still currently taking place, data collected in the past 5 years will produce results that best reflect these shifting dynamics. Because the data used in this analysis for monitoring shark locations only spans from Texas to North Carolina, only the following states from that analysis were used:
+This research is being conducted based on tornado path and shark location data collected between January 2021 and December 2025. This was done because a shifting climate has pushed tornadoes southeast [@ColemanSpatial2024], while shark populations are beginning to move into North Atlantic coasts due to rising ocean temperatures in the Gulf of Mexico and the South Atlantic [@OceanSharkStudy]. While it is impossible to assess the full impact of these climate shifts, as they are still currently taking place, data collected in the past 5 years will produce results that best reflect these shifting dynamics, as changes in temperatures will affect the patterns of both tornadoes and shark migration patterns. Because the data used in this analysis for monitoring shark locations only spans from Texas to North Carolina, only the following states from that analysis were used:
 
 ::: {.callout-tip}
 ## States used in this Analysis
@@ -162,7 +162,7 @@ knitr::kable(head(shark.species9, 9))
 ::: {.callout-warning}
 ## Divide between Sample Analysis Results and Public Perception
 
-Based on our data, Rhizopriondon Terranovae made up 49.84% of the sample, and Carcharhinus Plumbeus made up 14.59% of the sample. Adult Rhizopriondon Terranovae tend to measure in between 2-3 ft long and can live up to 9 years [@AtlanticSharpnoseShark], and they are far from the stereotypical depiction of sharks that exist in the minds of the public despite representing almost a majority of this study's entire shark sample size.
+Based on our data, Rhizopriondon Terranovae made up 49.84% of the sample, and Carcharhinus Plumbeus made up 14.59% of the sample. Adult Rhizopriondon Terranovae tend to measure in between 2-3 ft long and can live up to 9 years [@AtlanticSharpnoseShark], and they are not the standard depiction of sharks that exist in the minds of the public despite making up almost a majority of this study's entire shark sample size.
 
 :::
 
