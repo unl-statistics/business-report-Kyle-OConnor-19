@@ -4,6 +4,7 @@ author:
   - Kyle O'Connor
 format: 
   revealjs:
+    embed-resources: true
     multiplex: false
     theme: ["pp.scss"]
     slide-number: c/t
