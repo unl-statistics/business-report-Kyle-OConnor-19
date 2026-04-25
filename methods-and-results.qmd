@@ -276,7 +276,7 @@ legend("bottomright",
 #| echo: false
 #| warning: false
 
-set.seed(251349)
+set.seed(251349262)
 RNGkind(sample.kind="Rounding")
 
 sharks.sf <- st_as_sf(sharks20, 
