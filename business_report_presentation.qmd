@@ -479,15 +479,27 @@ knitr::kable(knn.table)
 [Conclusion:]{.underline} **A shark-populated tornado poses no serious or tangible threat to this company.**
 :::
 
-## Recommendations
+## Recommendations {background-image="rhizo.jpg" background-size="cover" background-opacity="0.20"}
 
+::: {style="display: inline-block; background-color: white; border: 5px solid black; padding: 20px 40px; border-radius: 10px;"}
 **1)**  The company should coordinate with its corporate and governmental partners to enact climate-friendly policies aimed at slowing the rate of global warming.
 
-
 **2)**  The company should review its current contingency procedures regarding extreme weather events to ensure there are sufficient plans-of-action in the event of a strong tornado causing substantial damage to company property.
+:::
 
-## 
+## Limitations {background-image="shark-floor.jpg" background-size="cover" background-opacity="0.30"}
 
-::: {style="text-align: center; font-size: 2.5em; font-weight: bold; margin-top: 300px;"}
+::: {style="display: inline-block; background-color: white; border: 5px solid black; padding: 20px 40px; border-radius: 10px;"}
+-   Need Separate Analysis done on Hurricane Potential
+-   No Analysis done on Inland Shark Population Areas (Zoos, Aquariums, Labs)
+-   Analysis Scope Limited to Certain States
+:::
+
+## {background-image="ocean.jpg" background-size="cover" background-opacity="0.5"}
+
+::: {.absolute top="50%" left="50%" style="transform: translate(-50%, -50%);"}
+::: {style="display: inline-block; background-color: white; border: 5px solid black; padding: 20px 40px; font-size: 2.5em; font-weight: bold; border-radius: 10px; text-align: center;"}
 Questions?
 :::
+:::
+
