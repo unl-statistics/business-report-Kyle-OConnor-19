@@ -87,7 +87,7 @@ plot(clean.tor.3up$BEGIN_LON, clean.tor.3up$BEGIN_LAT, type="n",
      xlab="Longitude",
      ylab="Latitude",
      asp=1,
-     main="Starting Position of U.S. Tornados from 2021-2025")
+     main="Starting Position of Southeastern U.S. EF3+ Tornados from 2021-2025")
 map("state", col="grey", fill=FALSE, add=TRUE)
 points(clean.tor.3up$BEGIN_LON, clean.tor.3up$BEGIN_LAT, 
        col=ef.scale[clean.tor.3up$EF_SCALE+1], 
@@ -111,7 +111,7 @@ plot(clean.tor$END_LON, clean.tor$END_LAT, type="n",
      xlab="Longitude",
      ylab="Latitude",
      asp=1,
-     main="Trajectories of U.S. Tornados from 2021-2025")
+     main="Trajectories of Southeastern U.S. EF3+ Tornados from 2021-2025")
 segments(x0=clean.tor.3up$BEGIN_LON,
          y0=clean.tor.3up$BEGIN_LAT, 
          x1=clean.tor.3up$END_LON,
