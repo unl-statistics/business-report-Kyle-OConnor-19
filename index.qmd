@@ -3,12 +3,16 @@
 ## Objectives
 
 This report analyzes the likelihood that all of the conditions needed for a tornado to lift up a shark occur simultaneously within a coastal buffer zone off the U.S. mainland, which would allow for the possibility of the shark-populated tornado to hit a major coastal population center. These requirements include:
--   Tornado Strength (based on a conservative minimum of an EF3)
--   Tornado Path (with a primary interest in inland tornados that travel along the coast)
--   Shark Presence along the Tornado Path
--   Location within a 20 mile buffer zone that captures inland tornado zones and coastal shark populations
 
-## Methodology 
+- Tornado Strength (based on a conservative minimum of an EF3-strength tornado)
+
+- Tornado Path (with a primary interest in inland tornados that travel along the coast)
+
+- Shark Presence along the Tornado Path
+
+- Location within a 20 mile buffer zone that captures inland tornado zones and coastal shark populations
+
+## Methodology
 
 Data collected over the past five years by the National Oceanic and Atmospheric Association (NOAA) was used to sort and categorize tornado and shark locations. First, the number of tornados and sharks located within a set coastal buffer zone, as seen in @fig-shelf, was calculated using spatial analysis techniques (@fig-sharknado-buffer-1). Then, each of the tornados contained within the buffer were classified based on whether or not they formed in proximity to sharks located within the buffer using a nearest neighbor classification method.
 
@@ -22,11 +26,10 @@ Findings from this report show that the likelihood of a tornado forming within t
 
 While the risk of a shark-populated tornado is extremely low, the risk of powerful tornados impacting our organization's goals and bottom line will continue to grow due to the effects of a warming global climate. This report provides the following recommendations regarding this company's future courses of action:
 
-::: {.callout-tip}
-
+::: callout-tip
 ## Recommendations
+
 1)  The company should coordinate with its corporate and governmental partners to enact climate-friendly policies aimed at slowing the rate of global warming.
 
 2)  The company should review its current contingency procedures regarding extreme weather events to ensure there are sufficient plans-of-action in the event of a strong tornado causing substantial damage to company property.
-
 :::
