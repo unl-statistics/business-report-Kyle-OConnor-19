@@ -14,7 +14,7 @@ This report analyzes the likelihood that all of the conditions needed for a torn
 
 ## Methodology
 
-Data collected over the past five years by the National Oceanic and Atmospheric Association (NOAA) was used to sort and categorize tornado and shark locations. First, the number of tornados and sharks located within a set coastal buffer zone, as seen in @fig-shelf, was calculated using spatial analysis techniques (@fig-sharknado-buffer-1). Then, each of the tornados contained within the buffer were classified based on whether or not they formed in proximity to sharks located within the buffer using a nearest neighbor classification method.
+Data collected over the past five years by the National Oceanic and Atmospheric Association (NOAA) was used to collect and categorize both tornado and shark locations. First, the number of tornados and sharks located within a set coastal buffer zone was calculated using spatial analysis techniques (@fig-sharknado-buffer-1). Then, each of the tornados contained within the buffer were classified based on whether or not they formed in proximity to sharks located within the buffer using a nearest neighbor classification method. The goal is to collect a representative sample of sharks that can be found along the coastal waters contained within the U.S. coastal continental shelf, as pictured in @fig-shelf.
 
 ![Continental Shelf Zones for the Southeastern U.S.](cont-shelf.png){#fig-shelf}
 
