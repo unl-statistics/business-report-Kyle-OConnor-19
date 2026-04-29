@@ -81,18 +81,20 @@ clean.tor <- ec.tornado[!is.na(ec.tornado$BEGIN_LON) & !is.na(ec.tornado$BEGIN_L
 clean.tor$EF_SCALE <- as.numeric(str_remove(clean.tor$TOR_F_SCALE, "EF"))
 ef.scale <- viridis(6, direction=-1)
 
-plot(clean.tor$BEGIN_LON, clean.tor$BEGIN_LAT, type="n", 
+clean.tor.3up <- clean.tor[clean.tor$EF_SCALE >= 3,]
+
+plot(clean.tor.3up$BEGIN_LON, clean.tor.3up$BEGIN_LAT, type="n", 
      xlab="Longitude",
      ylab="Latitude",
      asp=1,
      main="Starting Position of U.S. Tornados from 2021-2025")
 map("state", col="grey", fill=FALSE, add=TRUE)
-points(clean.tor$BEGIN_LON, clean.tor$BEGIN_LAT, 
-       col=ef.scale[clean.tor$EF_SCALE+1], 
+points(clean.tor.3up$BEGIN_LON, clean.tor.3up$BEGIN_LAT, 
+       col=ef.scale[clean.tor.3up$EF_SCALE+1], 
        pch=16)
 legend("bottomright", 
-       legend=c("EF0", "EF1", "EF2", "EF3", "EF4", "EF5"), 
-       col=ef.scale[1:6],
+       legend=c("EF3", "EF4", "EF5"), 
+       col=ef.scale[4:6],
        pch=16, 
        cex=0.7, 
        title="Starting EF Rating")
@@ -110,15 +112,16 @@ plot(clean.tor$END_LON, clean.tor$END_LAT, type="n",
      ylab="Latitude",
      asp=1,
      main="Trajectories of U.S. Tornados from 2021-2025")
-segments(x0=clean.tor$BEGIN_LON,
-         y0=clean.tor$BEGIN_LAT, 
-         x1=clean.tor$END_LON,
-         y1=clean.tor$END_LAT, 
+segments(x0=clean.tor.3up$BEGIN_LON,
+         y0=clean.tor.3up$BEGIN_LAT, 
+         x1=clean.tor.3up$END_LON,
+         y1=clean.tor.3up$END_LAT, 
          col=adjustcolor("black", alpha.f=1.5), 
          lwd=1.5)
 map("state", col="grey", fill=FALSE, add=TRUE)
 
 ```
+
 @fig-tornado-location shows all recorded tornados in states that border the Gulf of Mexico[^methods_and_results-1] or the Atlantic Ocean. The color of each dot represents the EF rating of the tornado. In total, 3,116 observations were collected within the area of interest.
 
 [^methods_and_results-1]: As the majority of the data for both sharks and tornados was collected before 2025, it is internally referred to as the "Gulf of Mexico" rather than the "Gulf of America" in the raw data files. To avoid confusion and to maintain consistency, this report uses the older term "Gulf of Mexico" to describe the body of water located south of the U.S. to align with the internal raw data.
@@ -400,7 +403,7 @@ The highest value based on this analysis was `r k.max`, which produced an overal
 set.seed(251349262)
 RNGkind(sample.kind="Rounding")
 
-boot.shark<-replicate(250, {
+boot.shark<-replicate(100, {
   ocean.loc<-st_coordinates(st_sample(sharknado.zone, size=2675))
   train.data<-rbind(shark.loc, ocean.loc)
   as.character(knn(train=train.data,
