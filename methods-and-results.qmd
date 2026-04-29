@@ -380,7 +380,7 @@ plot(x=save.results.cv[,1],
      pch=16,
      col="black", 
      xlab="K", 
-     ylab="Error Rate %",
+     ylab="Error Rate (%)",
      ylim=c(0,1))
 k.err<-save.results.cv[save.results.cv[,1]>4,][which.min(error.rate[save.results.cv[,1]>4]), 1]
 k.errac <- 1-k.accuracy
